@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PESA Planner</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="container">
+    <header>
+      <h1>PESA Planner</h1>
+      <p>Minimal editable planner prototype.</p>
+    </header>
+
+    <section class="card">
+      <label for="title">Plan Title</label>
+      <input id="title" type="text" placeholder="Weekly focus" />
+
+      <label for="notes">Notes</label>
+      <textarea id="notes" rows="8" placeholder="Write your plan..."></textarea>
+
+      <div class="row">
+        <button id="saveBtn" type="button">Save</button>
+        <span id="status">Not saved yet</span>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
