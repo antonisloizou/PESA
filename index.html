@@ -4,29 +4,101 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PESA Planner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,600,0,0" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main class="container">
-    <header>
-      <h1>PESA Planner</h1>
-      <p>Minimal editable planner prototype.</p>
-    </header>
+  <main class="page">
+    <section class="panel cta-panel" id="overviewCta">
+      <button type="button" id="goCurrentWeekBtn" class="go-btn">LETS. FUCKING. GO!</button>
+    </section>
+    <section class="panel carousel-shell" id="overviewCarousel">
+      <div class="carousel-stage">
+        <button type="button" id="overviewPrevBtn" class="carousel-caret-btn" aria-label="Previous overview panel">&#8249;</button>
+        <div class="carousel-viewport">
+          <div class="carousel-track">
+            <section class="home-card carousel-slide is-active" id="overviewPage" data-slide-name="Mission">
+              <h2 class="panel-title">PESA MISSION</h2>
+              <div class="mission-grid">
+                <ul id="missionList" class="mission-list"></ul>
+              </div>
+              <button type="button" id="addMissionBtn" class="mission-add-btn" aria-label="Add mission statement">+ Add Mission</button>
+            </section>
 
-    <section class="card">
-      <label for="title">Plan Title</label>
-      <input id="title" type="text" placeholder="Weekly focus" />
+            <section class="home-card carousel-slide" id="overviewOps" data-slide-name="Major Ops">
+              <h2 class="panel-title">MAJOR EVENTS</h2>
+              <div class="ops-grid">
+                <table class="ops-table" aria-label="Major PESA Operations">
+                  <tbody id="opsTableBody"></tbody>
+                </table>
+                <button type="button" id="addOpsBtn" class="ops-add-btn" aria-label="Add operation item">Add Item</button>
+              </div>
+            </section>
 
-      <label for="notes">Notes</label>
-      <textarea id="notes" rows="8" placeholder="Write your plan..."></textarea>
+            <section class="home-card carousel-slide" id="strategicReminders" data-slide-name="Reminders">
+              <h2 class="panel-title">REMEMBER</h2>
+              <div class="reminder-content" id="reminderContent">
+                <p>This schedule is ambitious, but it is no longer random.</p>
+                <p>I am developing an actual annual circuit:</p>
+                <ul>
+                  <li>coaching events</li>
+                  <li>expedition leadership</li>
+                  <li>seasonal Norway migration</li>
+                  <li>media/content output</li>
+                  <li>paragliding partnerships</li>
+                  <li>operational/system responsibilities</li>
+                </ul>
+                <p>
+                  The biggest risk is overload and fragmentation. The schedule only works if I protect recovery time,
+                  maintain consistency instead of intensity spikes, and treat content/documentation as part of the job.
+                </p>
+                <p>
+                  The strongest part of this trajectory is that multiple worlds are beginning to reinforce each other:
+                  skydiving -&gt; coaching -&gt; INNHOPP -&gt; storytelling -&gt; Level Wings -&gt; visibility -&gt; more invitations.
+                </p>
+                <p>That compounding effect is the real career path.</p>
+                <p class="reminder-close">PESA is becoming suspiciously real.</p>
+              </div>
+              <button type="button" id="editReminderBtn" class="reminder-edit-btn" aria-label="Edit remember notes">Edit</button>
+            </section>
+          </div>
+        </div>
+        <button type="button" id="overviewNextBtn" class="carousel-caret-btn" aria-label="Next overview panel">&#8250;</button>
+      </div>
 
-      <div class="row">
-        <button id="saveBtn" type="button">Save</button>
-        <span id="status">Not saved yet</span>
+      <div class="carousel-dots" id="overviewDots" aria-label="Overview sections"></div>
+    </section>
+
+    <section class="panel week-panel" id="weekPage" hidden>
+      <button type="button" id="prevWeekBtn" class="carousel-caret-btn week-caret-btn" aria-label="Previous week">&#8249;</button>
+      <button type="button" id="nextWeekBtn" class="carousel-caret-btn week-caret-btn" aria-label="Next week">&#8250;</button>
+
+      <div class="week-top">
+        <p id="weekDateRange" class="week-date-range"></p>
+        <h2 class="panel-title" id="weekMissionFocus"></h2>
+      </div>
+
+      <div class="week-checklist">
+        <h3>WEEKLY PESA CHECKLIST</h3>
+        <ul id="weekChecklist"></ul>
+      </div>
+
+      <div class="week-days" id="weekDays"></div>
+
+      <div class="week-notes">
+        <h3>NOTES / WINS / OPERATIONAL CHAOS</h3>
+        <p id="weekNotes"></p>
+      </div>
+
+      <div class="week-nav" id="weekNav">
+        <button type="button" id="homeBtn" class="week-nav-btn">Home</button>
       </div>
     </section>
   </main>
 
+  <script src="data/weeks.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
