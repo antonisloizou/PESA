@@ -80,6 +80,7 @@ const LOCAL_STATE_KEYS = [
 const SUPABASE_CLIENT_ID_KEY = "pesa_client_id_v1";
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const SUPABASE_FIXED_CLIENT_ID = String(import.meta.env.VITE_SUPABASE_CLIENT_ID || "").trim();
 let supabase = null;
 let supabaseClientId = null;
 let syncTimer = null;
@@ -182,6 +183,14 @@ function saveLocalStateValue(key, value) {
 }
 
 function getOrCreateSupabaseClientId() {
+  if (SUPABASE_FIXED_CLIENT_ID) {
+    try {
+      localStorage.setItem(SUPABASE_CLIENT_ID_KEY, SUPABASE_FIXED_CLIENT_ID);
+    } catch (_) {
+      // no-op
+    }
+    return SUPABASE_FIXED_CLIENT_ID;
+  }
   try {
     const existing = String(localStorage.getItem(SUPABASE_CLIENT_ID_KEY) || "").trim();
     if (existing) return existing;

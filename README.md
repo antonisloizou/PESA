@@ -49,5 +49,20 @@ This repo includes [deploy-pages.yml](./.github/workflows/deploy-pages.yml).
 2. Add these repository secrets:
    - `VITE_SUPABASE_URL`
    - `VITE_SUPABASE_ANON_KEY`
+   - `VITE_SUPABASE_CLIENT_ID`
 3. Push to `main` to trigger deployment.
 
+## Import localStorage from localhost into Supabase
+
+Use one shared client id between localhost and production.
+
+1. In local `.env` set:
+   - `VITE_SUPABASE_URL=...`
+   - `VITE_SUPABASE_ANON_KEY=...`
+   - `VITE_SUPABASE_CLIENT_ID=pesa-main`
+2. In GitHub secrets set the same `VITE_SUPABASE_CLIENT_ID` value.
+3. Run locally with your existing browser data:
+   - `npm run dev`
+   - open the app once and make any small change (or just interact normally)
+4. The app will upsert your current localStorage state to Supabase for that shared client id.
+5. Redeploy Pages; production will read the same state.
