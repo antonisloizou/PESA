@@ -1,3 +1,6 @@
+import { createClient } from "@supabase/supabase-js";
+import weeksData from "./data/weeks.js";
+
 const goCurrentWeekBtnEl = document.getElementById("goCurrentWeekBtn");
 const weekPanelEl = document.getElementById("weekPage");
 const overviewCarouselEl = document.getElementById("overviewCarousel");
@@ -60,6 +63,26 @@ const WEEK_NOTES_STATE_KEY = "pesa_week_notes_state_v1";
 const MISSION_STATE_KEY = "pesa_mission_state_v1";
 const OPS_STATE_KEY = "pesa_ops_state_v1";
 const REMINDER_STATE_KEY = "pesa_reminder_state_v1";
+const LOCAL_STATE_KEYS = [
+  DAY_ROUTINE_ANSWERS_STATE_KEY,
+  CHECKLIST_STATE_KEY,
+  CHECKLIST_ITEMS_STATE_KEY,
+  DAY_DONE_STATE_KEY,
+  DAY_INTENT_STATE_KEY,
+  DAY_HOURS_STATE_KEY,
+  DAY_HOUR_DONE_STATE_KEY,
+  MISSION_STATE_KEY,
+  OPS_STATE_KEY,
+  REMINDER_STATE_KEY,
+  WEEK_TITLE_STATE_KEY,
+  WEEK_NOTES_STATE_KEY
+];
+const SUPABASE_CLIENT_ID_KEY = "pesa_client_id_v1";
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
+let supabase = null;
+let supabaseClientId = null;
+let syncTimer = null;
 const ROUTINE_MODAL_COPY = {
   morning: {
     title: "High Performance Morning Routine",
@@ -153,6 +176,84 @@ const DEFAULT_REMINDER_HTML = reminderContentEl ? reminderContentEl.innerHTML : 
 let reminderEditing = false;
 let activeRoutineModalClose = null;
 
+function saveLocalStateValue(key, value) {
+  localStorage.setItem(key, value);
+  scheduleSupabaseStateSync();
+}
+
+function getOrCreateSupabaseClientId() {
+  try {
+    const existing = String(localStorage.getItem(SUPABASE_CLIENT_ID_KEY) || "").trim();
+    if (existing) return existing;
+    const created = (globalThis.crypto && crypto.randomUUID)
+      ? `client_${crypto.randomUUID()}`
+      : `client_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+    localStorage.setItem(SUPABASE_CLIENT_ID_KEY, created);
+    return created;
+  } catch (_) {
+    return `client_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+  }
+}
+
+function readLocalStateSnapshot() {
+  const snapshot = {};
+  LOCAL_STATE_KEYS.forEach((key) => {
+    const value = localStorage.getItem(key);
+    if (value !== null) snapshot[key] = value;
+  });
+  return snapshot;
+}
+
+function applyLocalStateSnapshot(snapshot) {
+  if (!snapshot || typeof snapshot !== "object") return;
+  Object.entries(snapshot).forEach(([key, value]) => {
+    if (!LOCAL_STATE_KEYS.includes(key)) return;
+    if (typeof value !== "string") return;
+    localStorage.setItem(key, value);
+  });
+}
+
+async function upsertSupabaseState(snapshot) {
+  if (!supabase || !supabaseClientId) return;
+  await supabase.from("planner_clients").upsert(
+    { client_id: supabaseClientId, state: snapshot },
+    { onConflict: "client_id" }
+  );
+}
+
+function scheduleSupabaseStateSync() {
+  if (!supabase || !supabaseClientId) return;
+  if (syncTimer) window.clearTimeout(syncTimer);
+  syncTimer = window.setTimeout(() => {
+    const snapshot = readLocalStateSnapshot();
+    upsertSupabaseState(snapshot);
+  }, 250);
+}
+
+async function initSupabaseStateSync() {
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return;
+
+  supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  supabaseClientId = getOrCreateSupabaseClientId();
+
+  const localSnapshot = readLocalStateSnapshot();
+  const { data } = await supabase
+    .from("planner_clients")
+    .select("state")
+    .eq("client_id", supabaseClientId)
+    .maybeSingle();
+
+  const remoteSnapshot = data?.state && typeof data.state === "object" ? data.state : {};
+  if (Object.keys(remoteSnapshot).length > 0) {
+    applyLocalStateSnapshot(remoteSnapshot);
+    return;
+  }
+
+  if (Object.keys(localSnapshot).length > 0) {
+    await upsertSupabaseState(localSnapshot);
+  }
+}
+
 function getRoutineTypeByText(value) {
   const text = String(value || "").trim().toLowerCase();
   if (text === "high performance morning routine") return "morning";
@@ -169,7 +270,7 @@ function loadRoutineAnswersState() {
 }
 
 function saveRoutineAnswersState(state) {
-  localStorage.setItem(DAY_ROUTINE_ANSWERS_STATE_KEY, JSON.stringify(state));
+  saveLocalStateValue(DAY_ROUTINE_ANSWERS_STATE_KEY, JSON.stringify(state));
 }
 
 function loadRoutineAnswersForSlot(page, day, hour, routineType) {
@@ -467,7 +568,7 @@ function loadChecklistState() {
 }
 
 function saveChecklistState(state) {
-  localStorage.setItem(CHECKLIST_STATE_KEY, JSON.stringify(state));
+  saveLocalStateValue(CHECKLIST_STATE_KEY, JSON.stringify(state));
 }
 
 function loadChecklistItemsState() {
@@ -479,7 +580,7 @@ function loadChecklistItemsState() {
 }
 
 function saveChecklistItemsState(state) {
-  localStorage.setItem(CHECKLIST_ITEMS_STATE_KEY, JSON.stringify(state));
+  saveLocalStateValue(CHECKLIST_ITEMS_STATE_KEY, JSON.stringify(state));
 }
 
 function makeChecklistItemId() {
@@ -604,7 +705,7 @@ function loadDayDoneState() {
 }
 
 function saveDayDoneState(state) {
-  localStorage.setItem(DAY_DONE_STATE_KEY, JSON.stringify(state));
+  saveLocalStateValue(DAY_DONE_STATE_KEY, JSON.stringify(state));
 }
 
 function loadDayIntentState() {
@@ -616,7 +717,7 @@ function loadDayIntentState() {
 }
 
 function saveDayIntentState(state) {
-  localStorage.setItem(DAY_INTENT_STATE_KEY, JSON.stringify(state));
+  saveLocalStateValue(DAY_INTENT_STATE_KEY, JSON.stringify(state));
 }
 
 function loadDayHoursState() {
@@ -628,7 +729,7 @@ function loadDayHoursState() {
 }
 
 function saveDayHoursState(state) {
-  localStorage.setItem(DAY_HOURS_STATE_KEY, JSON.stringify(state));
+  saveLocalStateValue(DAY_HOURS_STATE_KEY, JSON.stringify(state));
 }
 
 function loadDayHourDoneState() {
@@ -640,7 +741,7 @@ function loadDayHourDoneState() {
 }
 
 function saveDayHourDoneState(state) {
-  localStorage.setItem(DAY_HOUR_DONE_STATE_KEY, JSON.stringify(state));
+  saveLocalStateValue(DAY_HOUR_DONE_STATE_KEY, JSON.stringify(state));
 }
 
 function saveDayHourDoneValue(page, day, hour, done) {
@@ -750,7 +851,7 @@ function loadMissionState() {
 }
 
 function saveMissionState(state) {
-  localStorage.setItem(MISSION_STATE_KEY, JSON.stringify(state));
+  saveLocalStateValue(MISSION_STATE_KEY, JSON.stringify(state));
 }
 
 function loadOpsState() {
@@ -769,7 +870,7 @@ function loadOpsState() {
 }
 
 function saveOpsState(state) {
-  localStorage.setItem(OPS_STATE_KEY, JSON.stringify(state));
+  saveLocalStateValue(OPS_STATE_KEY, JSON.stringify(state));
 }
 
 function loadReminderState() {
@@ -785,7 +886,7 @@ function loadReminderState() {
 }
 
 function saveReminderState(value) {
-  localStorage.setItem(REMINDER_STATE_KEY, String(value || ""));
+  saveLocalStateValue(REMINDER_STATE_KEY, String(value || ""));
 }
 
 function loadWeekTitleState() {
@@ -799,7 +900,7 @@ function loadWeekTitleState() {
 }
 
 function saveWeekTitleState(state) {
-  localStorage.setItem(WEEK_TITLE_STATE_KEY, JSON.stringify(state));
+  saveLocalStateValue(WEEK_TITLE_STATE_KEY, JSON.stringify(state));
 }
 
 function loadWeekTitleForPage(page, fallbackTitle, legacyWeekLabel = "") {
@@ -840,7 +941,7 @@ function loadWeekNotesState() {
 }
 
 function saveWeekNotesState(state) {
-  localStorage.setItem(WEEK_NOTES_STATE_KEY, JSON.stringify(state));
+  saveLocalStateValue(WEEK_NOTES_STATE_KEY, JSON.stringify(state));
 }
 
 function loadWeekNotesForPage(page, fallbackNotes = "") {
@@ -2779,18 +2880,23 @@ window.addEventListener("resize", () => {
   renderDayCarousel();
 });
 
-initWeekCarousel();
-migrateDayIntentsToTitleCase();
-migrateWorkoutProteinEntries();
-seedDefaultDayHours();
-initDayCarousel();
-const initialState = pageStateFromUrl();
-if (initialState.dayIndex !== null) {
-  renderDayPage(initialState.page, initialState.dayIndex, { replaceUrl: true });
-} else {
-  renderPage(initialState.page, { replaceUrl: true });
+async function bootApp() {
+  await initSupabaseStateSync();
+  initWeekCarousel();
+  migrateDayIntentsToTitleCase();
+  migrateWorkoutProteinEntries();
+  seedDefaultDayHours();
+  initDayCarousel();
+  const initialState = pageStateFromUrl();
+  if (initialState.dayIndex !== null) {
+    renderDayPage(initialState.page, initialState.dayIndex, { replaceUrl: true });
+  } else {
+    renderPage(initialState.page, { replaceUrl: true });
+  }
+  renderMission();
+  renderOps();
+  renderReminder();
+  initOverviewCarousel();
 }
-renderMission();
-renderOps();
-renderReminder();
-initOverviewCarousel();
+
+bootApp();

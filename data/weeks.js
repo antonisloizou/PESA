@@ -883,3 +883,5 @@ const weeksData = [
     notes: ""
   }
 ];
+
+export default weeksData;
