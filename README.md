@@ -50,3 +50,4 @@ This repo includes [deploy-pages.yml](./.github/workflows/deploy-pages.yml).
    - `VITE_SUPABASE_URL`
    - `VITE_SUPABASE_ANON_KEY`
 3. Push to `main` to trigger deployment.
+
