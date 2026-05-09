@@ -16,13 +16,13 @@ const weeksData = [
       "1 recovery/reset block"
     ],
     days: [
-      { day: "Mon", intent: "Planning + systems", done: true },
-      { day: "Tue", intent: "Coaching progression", done: true },
-      { day: "Wed", intent: "Content + editing", done: true },
-      { day: "Thu", intent: "Networking + outreach", done: true },
-      { day: "Fri", intent: "PG / scouting / jumping", done: true },
-      { day: "Sat", intent: "Jumping / coaching / events", done: true },
-      { day: "Sun", intent: "Flying + recovery + reflection", done: true }
+      { day: "Mon", intent: "Recovery / reset", done: false },
+      { day: "Tue", intent: "Content / editing", done: false },
+      { day: "Wed", intent: "Planning / coding", done: false },
+      { day: "Thu", intent: "Paragliding", done: false },
+      { day: "Fri", intent: "Coaching progression / networking", done: false },
+      { day: "Sat", intent: "Skydiving", done: false },
+      { day: "Sun", intent: "Skydiving", done: false }
     ],
     notes: ""
   },
@@ -43,13 +43,13 @@ const weeksData = [
       "1 recovery/reset block"
     ],
     days: [
-      { day: "Mon", intent: "Planning + systems", done: true },
-      { day: "Tue", intent: "Coaching progression", done: true },
-      { day: "Wed", intent: "Content + editing", done: true },
-      { day: "Thu", intent: "Networking + outreach", done: true },
-      { day: "Fri", intent: "AFF / coaching / jumping", done: true },
-      { day: "Sat", intent: "AFF / coaching / jumping", done: true },
-      { day: "Sun", intent: "AFF / coaching / jumping", done: true }
+      { day: "Mon", intent: "Recovery / reset", done: false },
+      { day: "Tue", intent: "Content / editing", done: false },
+      { day: "Wed", intent: "Planning / coding", done: false },
+      { day: "Thu", intent: "Paragliding", done: false },
+      { day: "Fri", intent: "AFF / coaching / jumping", done: false },
+      { day: "Sat", intent: "AFF / coaching / jumping", done: false },
+      { day: "Sun", intent: "AFF / coaching / jumping", done: false }
     ],
     notes: ""
   },
@@ -70,13 +70,13 @@ const weeksData = [
       "1 recovery/reset block"
     ],
     days: [
-      { day: "Mon", intent: "AFF / coaching / jumping", done: true },
-      { day: "Tue", intent: "AFF / coaching / jumping", done: true },
-      { day: "Wed", intent: "AFF / coaching / jumping", done: true },
-      { day: "Thu", intent: "AFF / coaching / jumping", done: true },
-      { day: "Fri", intent: "AFF / coaching / jumping", done: true },
-      { day: "Sat", intent: "AFF / coaching / jumping", done: true },
-      { day: "Sun", intent: "AFF / coaching / jumping", done: true }
+      { day: "Mon", intent: "AFF / coaching / jumping", done: false },
+      { day: "Tue", intent: "AFF / coaching / jumping", done: false },
+      { day: "Wed", intent: "AFF / coaching / jumping", done: false },
+      { day: "Thu", intent: "AFF / coaching / jumping", done: false },
+      { day: "Fri", intent: "AFF / coaching / jumping", done: false },
+      { day: "Sat", intent: "AFF / coaching / jumping", done: false },
+      { day: "Sun", intent: "AFF / coaching / jumping", done: false }
     ],
     notes: ""
   },
@@ -97,13 +97,13 @@ const weeksData = [
       "1 recovery/reset block"
     ],
     days: [
-      { day: "Mon", intent: "Planning + systems", done: true },
-      { day: "Tue", intent: "Coaching progression", done: true },
-      { day: "Wed", intent: "Content + editing", done: true },
-      { day: "Thu", intent: "Networking + outreach", done: true },
-      { day: "Fri", intent: "PG / scouting / jumping", done: true },
-      { day: "Sat", intent: "Jumping / coaching / events", done: true },
-      { day: "Sun", intent: "Flying + recovery + reflection", done: true }
+      { day: "Mon", intent: "Recovery / reset", done: false },
+      { day: "Tue", intent: "Content / editing", done: false },
+      { day: "Wed", intent: "Planning / coding", done: false },
+      { day: "Thu", intent: "Paragliding", done: false },
+      { day: "Fri", intent: "Coaching progression / networking", done: false },
+      { day: "Sat", intent: "Skydiving", done: false },
+      { day: "Sun", intent: "Skydiving", done: false }
     ],
     notes: ""
   },
@@ -124,13 +124,13 @@ const weeksData = [
       "1 recovery/reset block"
     ],
     days: [
-      { day: "Mon", intent: "Planning + systems", done: true },
-      { day: "Tue", intent: "Coaching progression", done: true },
-      { day: "Wed", intent: "Content + editing", done: true },
-      { day: "Thu", intent: "Networking + outreach", done: true },
-      { day: "Fri", intent: "PG / scouting / jumping", done: true },
-      { day: "Sat", intent: "Jumping / coaching / events", done: true },
-      { day: "Sun", intent: "Flying + recovery + reflection", done: true }
+      { day: "Mon", intent: "Recovery / reset", done: false },
+      { day: "Tue", intent: "Content / editing", done: false },
+      { day: "Wed", intent: "Planning / coding", done: false },
+      { day: "Thu", intent: "Paragliding", done: false },
+      { day: "Fri", intent: "Coaching progression / networking", done: false },
+      { day: "Sat", intent: "Skydiving", done: false },
+      { day: "Sun", intent: "Skydiving", done: false }
     ],
     notes: ""
   },
@@ -151,13 +151,13 @@ const weeksData = [
       "1 recovery/reset block"
     ],
     days: [
-      { day: "Mon", intent: "Planning + systems", done: true },
-      { day: "Tue", intent: "Coaching progression", done: true },
-      { day: "Wed", intent: "Content + editing", done: true },
-      { day: "Thu", intent: "Networking + outreach", done: true },
-      { day: "Fri", intent: "PG / scouting / jumping", done: true },
-      { day: "Sat", intent: "Jumping / coaching / events", done: true },
-      { day: "Sun", intent: "Flying + recovery + reflection", done: true }
+      { day: "Mon", intent: "Recovery / reset", done: false },
+      { day: "Tue", intent: "Content / editing", done: false },
+      { day: "Wed", intent: "Planning / coding", done: false },
+      { day: "Thu", intent: "Paragliding", done: false },
+      { day: "Fri", intent: "Coaching progression / networking", done: false },
+      { day: "Sat", intent: "Skydiving", done: false },
+      { day: "Sun", intent: "Skydiving", done: false }
     ],
     notes: ""
   },
@@ -218,13 +218,13 @@ const weeksData = [
       "1 recovery/reset block"
     ],
     days: [
-      { day: "Mon", intent: "Planning + systems", done: true },
-      { day: "Tue", intent: "Coaching progression", done: true },
-      { day: "Wed", intent: "Content + editing", done: true },
-      { day: "Thu", intent: "Networking + outreach", done: true },
-      { day: "Fri", intent: "PG / scouting / jumping", done: true },
-      { day: "Sat", intent: "Jumping / coaching / events", done: true },
-      { day: "Sun", intent: "Flying + recovery + reflection", done: true }
+      { day: "Mon", intent: "Recovery / reset", done: false },
+      { day: "Tue", intent: "Content / editing", done: false },
+      { day: "Wed", intent: "Planning / coding", done: false },
+      { day: "Thu", intent: "Paragliding", done: false },
+      { day: "Fri", intent: "Coaching progression / networking", done: false },
+      { day: "Sat", intent: "Skydiving", done: false },
+      { day: "Sun", intent: "Skydiving", done: false }
     ],
     notes: ""
   },
@@ -245,6 +245,13 @@ const weeksData = [
       "1 recovery/reset block"
     ],
     days: [
+      { day: "Mon", intent: "Recovery / reset", done: false },
+      { day: "Tue", intent: "Content / editing", done: false },
+      { day: "Wed", intent: "Too Hot To Break Off", done: false },
+      { day: "Thu", intent: "Too Hot To Break Off", done: false },
+      { day: "Fri", intent: "Too Hot To Break Off", done: false },
+      { day: "Sat", intent: "Too Hot To Break Off", done: false },
+      { day: "Sun", intent: "Too Hot To Break Off", done: false }
     ],
     notes: ""
   },
@@ -265,13 +272,13 @@ const weeksData = [
       "1 recovery/reset block"
     ],
     days: [
-      { day: "Mon", intent: "Planning + systems", done: true },
-      { day: "Tue", intent: "Coaching progression", done: true },
-      { day: "Wed", intent: "Content + editing", done: true },
-      { day: "Thu", intent: "Networking + outreach", done: true },
-      { day: "Fri", intent: "PG / scouting / jumping", done: true },
-      { day: "Sat", intent: "Jumping / coaching / events", done: true },
-      { day: "Sun", intent: "Reid Garton's Innhopp Birthday", done: true }
+      { day: "Mon", intent: "Recovery / reset", done: false },
+      { day: "Tue", intent: "Content / editing", done: false },
+      { day: "Wed", intent: "Planning / coding", done: false },
+      { day: "Thu", intent: "Paragliding", done: false },
+      { day: "Fri", intent: "Coaching progression / networking", done: false },
+      { day: "Sat", intent: "Skydiving", done: false },
+      { day: "Sun", intent: "Reid Garton's Innhopp Birthday", done: false }
     ],
     notes: ""
   },
@@ -292,13 +299,13 @@ const weeksData = [
       "1 recovery/reset block"
     ],
     days: [
-      { day: "Mon", intent: "Reid Garton's Innhopp Birthday", done: true },
-      { day: "Tue", intent: "Reid Garton's Innhopp Birthday", done: true },
-      { day: "Wed", intent: "Reid Garton's Innhopp Birthday", done: true },
-      { day: "Thu", intent: "Reid Garton's Innhopp Birthday", done: true },
-      { day: "Fri", intent: "Reid Garton's Innhopp Birthday", done: true },
-      { day: "Sat", intent: "Reid Garton's Innhopp Birthday", done: true },
-      { day: "Sun", intent: "Reid Garton's Innhopp Birthday", done: true }
+      { day: "Mon", intent: "Reid Garton's Innhopp Birthday", done: false },
+      { day: "Tue", intent: "Reid Garton's Innhopp Birthday", done: false },
+      { day: "Wed", intent: "Reid Garton's Innhopp Birthday", done: false },
+      { day: "Thu", intent: "Reid Garton's Innhopp Birthday", done: false },
+      { day: "Fri", intent: "Reid Garton's Innhopp Birthday", done: false },
+      { day: "Sat", intent: "Reid Garton's Innhopp Birthday", done: false },
+      { day: "Sun", intent: "Reid Garton's Innhopp Birthday", done: false }
     ],
     notes: ""
   },
@@ -319,13 +326,13 @@ const weeksData = [
       "1 recovery/reset block"
     ],
     days: [
-      { day: "Mon", intent: "Reid Garton's Innhopp Birthday", done: true },
-      { day: "Tue", intent: "Coaching progression", done: true },
-      { day: "Wed", intent: "Content + editing", done: true },
-      { day: "Thu", intent: "Networking + outreach", done: true },
-      { day: "Fri", intent: "PG / scouting / jumping", done: true },
-      { day: "Sat", intent: "Jumping / coaching / events", done: true },
-      { day: "Sun", intent: "Flying + recovery + reflection", done: true }
+      { day: "Mon", intent: "Reid Garton's Innhopp Birthday", done: false },
+      { day: "Tue", intent: "Content / editing", done: false },
+      { day: "Wed", intent: "Planning / coding", done: false },
+      { day: "Thu", intent: "Paragliding", done: false },
+      { day: "Fri", intent: "Coaching progression / networking", done: false },
+      { day: "Sat", intent: "Skydiving", done: false },
+      { day: "Sun", intent: "Skydiving", done: false }
     ],
     notes: ""
   },
@@ -346,13 +353,13 @@ const weeksData = [
       "1 recovery/reset block"
     ],
     days: [
-      { day: "Mon", intent: "Planning + systems", done: true },
-      { day: "Tue", intent: "Coaching progression", done: true },
-      { day: "Wed", intent: "Content + editing", done: true },
-      { day: "Thu", intent: "Networking + outreach", done: true },
-      { day: "Fri", intent: "PG / scouting / jumping", done: true },
-      { day: "Sat", intent: "Jumping / coaching / events", done: true },
-      { day: "Sun", intent: "Flying + recovery + reflection", done: true }
+      { day: "Mon", intent: "Recovery / reset", done: false },
+      { day: "Tue", intent: "Content / editing", done: false },
+      { day: "Wed", intent: "Planning / coding", done: false },
+      { day: "Thu", intent: "Paragliding", done: false },
+      { day: "Fri", intent: "Coaching progression / networking", done: false },
+      { day: "Sat", intent: "Skydiving", done: false },
+      { day: "Sun", intent: "Skydiving", done: false }
     ],
     notes: ""
   },
@@ -373,13 +380,13 @@ const weeksData = [
       "1 recovery/reset block"
     ],
     days: [
-      { day: "Mon", intent: "Planning + systems", done: true },
-      { day: "Tue", intent: "Coaching progression", done: true },
-      { day: "Wed", intent: "Content + editing", done: true },
-      { day: "Thu", intent: "Networking + outreach", done: true },
-      { day: "Fri", intent: "PG / scouting / jumping", done: true },
-      { day: "Sat", intent: "Jumping / coaching / events", done: true },
-      { day: "Sun", intent: "Flying + recovery + reflection", done: true }
+      { day: "Mon", intent: "Recovery / reset", done: false },
+      { day: "Tue", intent: "Content / editing", done: false },
+      { day: "Wed", intent: "Planning / coding", done: false },
+      { day: "Thu", intent: "Paragliding", done: false },
+      { day: "Fri", intent: "Coaching progression / networking", done: false },
+      { day: "Sat", intent: "Skydiving", done: false },
+      { day: "Sun", intent: "Skydiving", done: false }
     ],
     notes: ""
   },
@@ -400,13 +407,13 @@ const weeksData = [
       "1 recovery/reset block"
     ],
     days: [
-      { day: "Mon", intent: "Planning + systems", done: true },
-      { day: "Tue", intent: "Coaching progression", done: true },
-      { day: "Wed", intent: "Content + editing", done: true },
-      { day: "Thu", intent: "Networking + outreach", done: true },
-      { day: "Fri", intent: "PG / scouting / jumping", done: true },
-      { day: "Sat", intent: "Jumping / coaching / events", done: true },
-      { day: "Sun", intent: "Flying + recovery + reflection", done: true }
+      { day: "Mon", intent: "Recovery / reset", done: false },
+      { day: "Tue", intent: "Content / editing", done: false },
+      { day: "Wed", intent: "Planning / coding", done: false },
+      { day: "Thu", intent: "Paragliding", done: false },
+      { day: "Fri", intent: "Coaching progression / networking", done: false },
+      { day: "Sat", intent: "Skydiving", done: false },
+      { day: "Sun", intent: "Skydiving", done: false }
     ],
     notes: ""
   },
@@ -447,13 +454,13 @@ const weeksData = [
       "1 recovery/reset block"
     ],
     days: [
-      { day: "Mon", intent: "Timeless Classics", done: true },
-      { day: "Tue", intent: "Timeless Classics", done: true },
-      { day: "Wed", intent: "Timeless Classics", done: true },
-      { day: "Thu", intent: "Timeless Classics", done: true },
-      { day: "Fri", intent: "Timeless Classics", done: true },
-      { day: "Sat", intent: "Jumping / coaching / events", done: true },
-      { day: "Sun", intent: "Flying + recovery + reflection", done: true }
+      { day: "Mon", intent: "Timeless Classics", done: false },
+      { day: "Tue", intent: "Timeless Classics", done: false },
+      { day: "Wed", intent: "Timeless Classics", done: false },
+      { day: "Thu", intent: "Timeless Classics", done: false },
+      { day: "Fri", intent: "Timeless Classics", done: false },
+      { day: "Sat", intent: "Skydiving", done: false },
+      { day: "Sun", intent: "Skydiving", done: false }
     ],
     notes: ""
   },
@@ -474,13 +481,13 @@ const weeksData = [
       "1 recovery/reset block"
     ],
     days: [
-      { day: "Mon", intent: "Planning + systems", done: true },
-      { day: "Tue", intent: "Coaching progression", done: true },
-      { day: "Wed", intent: "Content + editing", done: true },
-      { day: "Thu", intent: "Networking + outreach", done: true },
-      { day: "Fri", intent: "PG / scouting / jumping", done: true },
-      { day: "Sat", intent: "Jumping / coaching / events", done: true },
-      { day: "Sun", intent: "Flying + recovery + reflection", done: true }
+      { day: "Mon", intent: "Recovery / reset", done: false },
+      { day: "Tue", intent: "Content / editing", done: false },
+      { day: "Wed", intent: "Planning / coding", done: false },
+      { day: "Thu", intent: "Paragliding", done: false },
+      { day: "Fri", intent: "Coaching progression / networking", done: false },
+      { day: "Sat", intent: "Skydiving", done: false },
+      { day: "Sun", intent: "Skydiving", done: false }
     ],
     notes: ""
   },
@@ -501,13 +508,13 @@ const weeksData = [
       "1 recovery/reset block"
     ],
     days: [
-      { day: "Mon", intent: "Planning + systems", done: true },
-      { day: "Tue", intent: "Coaching progression", done: true },
-      { day: "Wed", intent: "Content + editing", done: true },
-      { day: "Thu", intent: "Networking + outreach", done: true },
-      { day: "Fri", intent: "PG / scouting / jumping", done: true },
-      { day: "Sat", intent: "Jumping / coaching / events", done: true },
-      { day: "Sun", intent: "Flying + recovery + reflection", done: true }
+      { day: "Mon", intent: "Recovery / reset", done: false },
+      { day: "Tue", intent: "Content / editing", done: false },
+      { day: "Wed", intent: "Planning / coding", done: false },
+      { day: "Thu", intent: "Paragliding", done: false },
+      { day: "Fri", intent: "Coaching progression / networking", done: false },
+      { day: "Sat", intent: "Skydiving", done: false },
+      { day: "Sun", intent: "Skydiving", done: false }
     ],
     notes: ""
   },
@@ -528,13 +535,13 @@ const weeksData = [
       "1 recovery/reset block"
     ],
     days: [
-      { day: "Mon", intent: "Planning + systems", done: true },
-      { day: "Tue", intent: "Coaching progression", done: true },
-      { day: "Wed", intent: "Content + editing", done: true },
-      { day: "Thu", intent: "Networking + outreach", done: true },
-      { day: "Fri", intent: "PG / scouting / jumping", done: true },
-      { day: "Sat", intent: "Jumping / coaching / events", done: true },
-      { day: "Sun", intent: "Flying + recovery + reflection", done: true }
+      { day: "Mon", intent: "Recovery / reset", done: false },
+      { day: "Tue", intent: "Content / editing", done: false },
+      { day: "Wed", intent: "Planning / coding", done: false },
+      { day: "Thu", intent: "Paragliding", done: false },
+      { day: "Fri", intent: "Coaching progression / networking", done: false },
+      { day: "Sat", intent: "Skydiving", done: false },
+      { day: "Sun", intent: "Skydiving", done: false }
     ],
     notes: ""
   },
@@ -555,13 +562,13 @@ const weeksData = [
       "1 recovery/reset block"
     ],
     days: [
-      { day: "Mon", intent: "Planning + systems", done: true },
-      { day: "Tue", intent: "Coaching progression", done: true },
-      { day: "Wed", intent: "Content + editing", done: true },
-      { day: "Thu", intent: "Networking + outreach", done: true },
-      { day: "Fri", intent: "PG / scouting / jumping", done: true },
-      { day: "Sat", intent: "Jumping / coaching / events", done: true },
-      { day: "Sun", intent: "Flying + recovery + reflection", done: true }
+      { day: "Mon", intent: "Recovery / reset", done: false },
+      { day: "Tue", intent: "Content / editing", done: false },
+      { day: "Wed", intent: "Planning / coding", done: false },
+      { day: "Thu", intent: "Paragliding", done: false },
+      { day: "Fri", intent: "Coaching progression / networking", done: false },
+      { day: "Sat", intent: "Skydiving", done: false },
+      { day: "Sun", intent: "Skydiving", done: false }
     ],
     notes: ""
   },
@@ -582,13 +589,13 @@ const weeksData = [
       "1 recovery/reset block"
     ],
     days: [
-      { day: "Mon", intent: "Planning + systems", done: true },
-      { day: "Tue", intent: "Coaching progression", done: true },
-      { day: "Wed", intent: "Content + editing", done: true },
-      { day: "Thu", intent: "Networking + outreach", done: true },
-      { day: "Fri", intent: "PG / scouting / jumping", done: true },
-      { day: "Sat", intent: "Jumping / coaching / events", done: true },
-      { day: "Sun", intent: "Flying + recovery + reflection", done: true }
+      { day: "Mon", intent: "Recovery / reset", done: false },
+      { day: "Tue", intent: "Content / editing", done: false },
+      { day: "Wed", intent: "Planning / coding", done: false },
+      { day: "Thu", intent: "Paragliding", done: false },
+      { day: "Fri", intent: "Coaching progression / networking", done: false },
+      { day: "Sat", intent: "Skydiving", done: false },
+      { day: "Sun", intent: "Skydiving", done: false }
     ],
     notes: ""
   },
@@ -609,13 +616,13 @@ const weeksData = [
       "1 recovery/reset block"
     ],
     days: [
-      { day: "Mon", intent: "Planning + systems", done: true },
-      { day: "Tue", intent: "Coaching progression", done: true },
-      { day: "Wed", intent: "Content + editing", done: true },
-      { day: "Thu", intent: "Networking + outreach", done: true },
-      { day: "Fri", intent: "PG / scouting / jumping", done: true },
-      { day: "Sat", intent: "Jumping / coaching / events", done: true },
-      { day: "Sun", intent: "Flying + recovery + reflection", done: true }
+      { day: "Mon", intent: "Recovery / reset", done: false },
+      { day: "Tue", intent: "Content / editing", done: false },
+      { day: "Wed", intent: "Planning / coding", done: false },
+      { day: "Thu", intent: "Paragliding", done: false },
+      { day: "Fri", intent: "Coaching progression / networking", done: false },
+      { day: "Sat", intent: "Skydiving", done: false },
+      { day: "Sun", intent: "Skydiving", done: false }
     ],
     notes: ""
   },
@@ -656,13 +663,13 @@ const weeksData = [
       "1 recovery/reset block"
     ],
     days: [
-      { day: "Mon", intent: "Tora Tora Paradise / coaching", done: true },
-      { day: "Tue", intent: "Tora Tora Paradise / coaching", done: true },
-      { day: "Wed", intent: "Tora Tora Paradise / coaching", done: true },
-      { day: "Thu", intent: "Tora Tora Paradise / coaching", done: true },
-      { day: "Fri", intent: "Tora Tora Paradise / coaching", done: true },
-      { day: "Sat", intent: "Jumping / coaching / events", done: true },
-      { day: "Sun", intent: "Flying + recovery + reflection", done: true }
+      { day: "Mon", intent: "Tora Tora Paradise / coaching", done: false },
+      { day: "Tue", intent: "Tora Tora Paradise / coaching", done: false },
+      { day: "Wed", intent: "Tora Tora Paradise / coaching", done: false },
+      { day: "Thu", intent: "Tora Tora Paradise / coaching", done: false },
+      { day: "Fri", intent: "Tora Tora Paradise / coaching", done: false },
+      { day: "Sat", intent: "Skydiving", done: false },
+      { day: "Sun", intent: "Skydiving", done: false }
     ],
     notes: ""
   },
@@ -683,13 +690,13 @@ const weeksData = [
       "1 recovery/reset block"
     ],
     days: [
-      { day: "Mon", intent: "Planning + systems", done: true },
-      { day: "Tue", intent: "Coaching progression", done: true },
-      { day: "Wed", intent: "Content + editing", done: true },
-      { day: "Thu", intent: "Networking + outreach", done: true },
-      { day: "Fri", intent: "PG / scouting / jumping", done: true },
-      { day: "Sat", intent: "Jumping / coaching / events", done: true },
-      { day: "Sun", intent: "Flying + recovery + reflection", done: true }
+      { day: "Mon", intent: "Recovery / reset", done: false },
+      { day: "Tue", intent: "Content / editing", done: false },
+      { day: "Wed", intent: "Planning / coding", done: false },
+      { day: "Thu", intent: "Paragliding", done: false },
+      { day: "Fri", intent: "Coaching progression / networking", done: false },
+      { day: "Sat", intent: "Skydiving", done: false },
+      { day: "Sun", intent: "Skydiving", done: false }
     ],
     notes: ""
   },
@@ -710,13 +717,13 @@ const weeksData = [
       "1 recovery/reset block"
     ],
     days: [
-      { day: "Mon", intent: "Planning + systems", done: true },
-      { day: "Tue", intent: "Coaching progression", done: true },
-      { day: "Wed", intent: "Content + editing", done: true },
-      { day: "Thu", intent: "Networking + outreach", done: true },
-      { day: "Fri", intent: "PG / scouting / jumping", done: true },
-      { day: "Sat", intent: "Jumping / coaching / events", done: true },
-      { day: "Sun", intent: "Flying + recovery + reflection", done: true }
+      { day: "Mon", intent: "Recovery / reset", done: false },
+      { day: "Tue", intent: "Content / editing", done: false },
+      { day: "Wed", intent: "Planning / coding", done: false },
+      { day: "Thu", intent: "Paragliding", done: false },
+      { day: "Fri", intent: "Coaching progression / networking", done: false },
+      { day: "Sat", intent: "Skydiving", done: false },
+      { day: "Sun", intent: "Skydiving", done: false }
     ],
     notes: ""
   },
@@ -737,13 +744,13 @@ const weeksData = [
       "1 recovery/reset block"
     ],
     days: [
-      { day: "Mon", intent: "Planning + systems", done: true },
-      { day: "Tue", intent: "Coaching progression", done: true },
-      { day: "Wed", intent: "Content + editing", done: true },
-      { day: "Thu", intent: "Networking + outreach", done: true },
-      { day: "Fri", intent: "PG / scouting / jumping", done: true },
-      { day: "Sat", intent: "Jumping / coaching / events", done: true },
-      { day: "Sun", intent: "Flying + recovery + reflection", done: true }
+      { day: "Mon", intent: "Recovery / reset", done: false },
+      { day: "Tue", intent: "Content / editing", done: false },
+      { day: "Wed", intent: "Planning / coding", done: false },
+      { day: "Thu", intent: "Paragliding", done: false },
+      { day: "Fri", intent: "Coaching progression / networking", done: false },
+      { day: "Sat", intent: "Skydiving", done: false },
+      { day: "Sun", intent: "Skydiving", done: false }
     ],
     notes: ""
   },
@@ -784,13 +791,13 @@ const weeksData = [
       "1 recovery/reset block"
     ],
     days: [
-      { day: "Mon", intent: "INNHOPP Colombia #2", done: true },
-      { day: "Tue", intent: "INNHOPP Colombia #2", done: true },
-      { day: "Wed", intent: "Content + editing", done: true },
-      { day: "Thu", intent: "Networking + outreach", done: true },
-      { day: "Fri", intent: "PG / scouting / jumping", done: true },
-      { day: "Sat", intent: "Jumping / coaching / events", done: true },
-      { day: "Sun", intent: "Flying + recovery + reflection", done: true }
+      { day: "Mon", intent: "INNHOPP Colombia #2", done: false },
+      { day: "Tue", intent: "INNHOPP Colombia #2", done: false },
+      { day: "Wed", intent: "Planning / coding", done: false },
+      { day: "Thu", intent: "Paragliding", done: false },
+      { day: "Fri", intent: "Coaching progression / networking", done: false },
+      { day: "Sat", intent: "Skydiving", done: false },
+      { day: "Sun", intent: "Skydiving", done: false }
     ],
     notes: ""
   },
@@ -811,13 +818,13 @@ const weeksData = [
       "1 recovery/reset block"
     ],
     days: [
-      { day: "Mon", intent: "Planning + systems", done: true },
-      { day: "Tue", intent: "Coaching progression", done: true },
-      { day: "Wed", intent: "Content + editing", done: true },
-      { day: "Thu", intent: "Networking + outreach", done: true },
-      { day: "Fri", intent: "PG / scouting / jumping", done: true },
-      { day: "Sat", intent: "Jumping / coaching / events", done: true },
-      { day: "Sun", intent: "Flying + recovery + reflection", done: true }
+      { day: "Mon", intent: "Recovery / reset", done: false },
+      { day: "Tue", intent: "Content / editing", done: false },
+      { day: "Wed", intent: "Planning / coding", done: false },
+      { day: "Thu", intent: "Paragliding", done: false },
+      { day: "Fri", intent: "Coaching progression / networking", done: false },
+      { day: "Sat", intent: "Skydiving", done: false },
+      { day: "Sun", intent: "Skydiving", done: false }
     ],
     notes: ""
   },
@@ -838,13 +845,13 @@ const weeksData = [
       "1 recovery/reset block"
     ],
     days: [
-      { day: "Mon", intent: "Planning + systems", done: true },
-      { day: "Tue", intent: "Coaching progression", done: true },
-      { day: "Wed", intent: "Content + editing", done: true },
-      { day: "Thu", intent: "Networking + outreach", done: true },
-      { day: "Fri", intent: "PG / scouting / jumping", done: true },
-      { day: "Sat", intent: "Jumping / coaching / events", done: true },
-      { day: "Sun", intent: "Flying + recovery + reflection", done: true }
+      { day: "Mon", intent: "Recovery / reset", done: false },
+      { day: "Tue", intent: "Content / editing", done: false },
+      { day: "Wed", intent: "Planning / coding", done: false },
+      { day: "Thu", intent: "Paragliding", done: false },
+      { day: "Fri", intent: "Coaching progression / networking", done: false },
+      { day: "Sat", intent: "Skydiving", done: false },
+      { day: "Sun", intent: "Skydiving", done: false }
     ],
     notes: ""
   },
@@ -865,13 +872,13 @@ const weeksData = [
       "1 recovery/reset block"
     ],
     days: [
-      { day: "Mon", intent: "Planning + systems", done: true },
-      { day: "Tue", intent: "Coaching progression", done: true },
-      { day: "Wed", intent: "Content + editing", done: true },
-      { day: "Thu", intent: "Networking + outreach", done: true },
-      { day: "Fri", intent: "PG / scouting / jumping", done: true },
-      { day: "Sat", intent: "Jumping / coaching / events", done: true },
-      { day: "Sun", intent: "Flying + recovery + reflection", done: true }
+      { day: "Mon", intent: "Recovery / reset", done: false },
+      { day: "Tue", intent: "Content / editing", done: false },
+      { day: "Wed", intent: "Planning / coding", done: false },
+      { day: "Thu", intent: "Paragliding", done: false },
+      { day: "Fri", intent: "Coaching progression / networking", done: false },
+      { day: "Sat", intent: "Skydiving", done: false },
+      { day: "Sun", intent: "Skydiving", done: false }
     ],
     notes: ""
   }

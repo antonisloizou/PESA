@@ -20,7 +20,7 @@
         <div class="carousel-viewport">
           <div class="carousel-track">
             <section class="home-card carousel-slide is-active" id="overviewPage" data-slide-name="Mission">
-              <h2 class="panel-title">PESA MISSION</h2>
+              <h2 class="panel-title">P.E.S.A. MISSION</h2>
               <div class="mission-grid">
                 <ul id="missionList" class="mission-list"></ul>
               </div>
@@ -71,29 +71,36 @@
       <div class="carousel-dots" id="overviewDots" aria-label="Overview sections"></div>
     </section>
 
-    <section class="panel week-panel" id="weekPage" hidden>
-      <button type="button" id="prevWeekBtn" class="carousel-caret-btn week-caret-btn" aria-label="Previous week">&#8249;</button>
-      <button type="button" id="nextWeekBtn" class="carousel-caret-btn week-caret-btn" aria-label="Next week">&#8250;</button>
-
-      <div class="week-top">
-        <p id="weekDateRange" class="week-date-range"></p>
-        <h2 class="panel-title" id="weekMissionFocus"></h2>
+    <section class="panel week-carousel-shell" id="weekPage" hidden>
+      <div class="carousel-stage week-carousel-stage">
+        <button type="button" id="prevWeekBtn" class="carousel-caret-btn week-caret-btn" aria-label="Previous week">&#8249;</button>
+        <div class="carousel-viewport week-carousel-viewport">
+          <div class="carousel-track week-carousel-track" id="weekCarouselTrack"></div>
+        </div>
+        <button type="button" id="nextWeekBtn" class="carousel-caret-btn week-caret-btn" aria-label="Next week">&#8250;</button>
       </div>
 
-      <div class="week-checklist">
-        <h3>WEEKLY PESA CHECKLIST</h3>
-        <ul id="weekChecklist"></ul>
-      </div>
-
-      <div class="week-days" id="weekDays"></div>
-
-      <div class="week-notes">
-        <h3>NOTES / WINS / OPERATIONAL CHAOS</h3>
-        <p id="weekNotes"></p>
-      </div>
+      <div class="carousel-dots week-dots" id="weekDots" aria-label="Weeks"></div>
 
       <div class="week-nav" id="weekNav">
         <button type="button" id="homeBtn" class="week-nav-btn">Home</button>
+      </div>
+    </section>
+
+    <section class="panel day-carousel-shell" id="dayPage" hidden>
+      <div class="carousel-stage week-carousel-stage">
+        <button type="button" id="prevDayBtn" class="carousel-caret-btn week-caret-btn" aria-label="Previous day">&#8249;</button>
+        <div class="carousel-viewport week-carousel-viewport">
+          <div class="carousel-track week-carousel-track" id="dayCarouselTrack"></div>
+        </div>
+        <button type="button" id="nextDayBtn" class="carousel-caret-btn week-caret-btn" aria-label="Next day">&#8250;</button>
+      </div>
+
+      <div class="carousel-dots week-dots" id="dayDots" aria-label="Days in week"></div>
+
+      <div class="week-nav">
+        <button type="button" id="dayHomeBtn" class="week-nav-btn">Home</button>
+        <button type="button" id="dayWeekBtn" class="week-nav-btn">Back to Week</button>
       </div>
     </section>
   </main>
