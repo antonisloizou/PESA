@@ -831,6 +831,22 @@ function saveDayIntentAcrossWeeks(day, intent) {
   saveDayIntentState(state);
 }
 
+function readDayDoneValue(pageDoneState, day, idx) {
+  if (pageDoneState && typeof pageDoneState === "object") {
+    if (Object.prototype.hasOwnProperty.call(pageDoneState, day)) {
+      return Boolean(pageDoneState[day]);
+    }
+    // Backward compatibility for previously persisted numeric-index keys.
+    if (Object.prototype.hasOwnProperty.call(pageDoneState, idx)) {
+      return Boolean(pageDoneState[idx]);
+    }
+    if (Object.prototype.hasOwnProperty.call(pageDoneState, String(idx))) {
+      return Boolean(pageDoneState[String(idx)]);
+    }
+  }
+  return false;
+}
+
 function refreshAllRenderedWeekDayTables() {
   if (!weekCarouselTrackEl) return;
   const dayCards = weekCarouselTrackEl.querySelectorAll(".week-days[data-week-page]");
@@ -1838,11 +1854,14 @@ function renderDayTable(containerEl, page, days, onDaySelect = null) {
     const input = document.createElement("input");
     input.type = "checkbox";
     input.className = "day-done-checkbox";
-    input.checked = pageDoneState[idx] !== undefined ? Boolean(pageDoneState[idx]) : false;
+    input.checked = readDayDoneValue(pageDoneState, row.day, idx);
     input.addEventListener("change", () => {
       const current = loadDayDoneState();
       const nextPageState = { ...(current[String(page)] || {}) };
-      nextPageState[idx] = input.checked;
+      nextPageState[row.day] = input.checked;
+      // Cleanup legacy index keys once this row is touched.
+      delete nextPageState[idx];
+      delete nextPageState[String(idx)];
       current[String(page)] = nextPageState;
       saveDayDoneState(current);
     });
