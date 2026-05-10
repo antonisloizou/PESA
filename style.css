@@ -1,12 +1,17 @@
 :root {
-  --page-bg: #adb3bc;
-  --card-bg: #dcdcdc;
+  --page-bg: #a9b0b9;
+  --card-bg: #e2e5ea;
   --header-bg: #ffd319;
-  --text: #111;
-  --line: #b8b8b8;
-  --outer-line: #2b2b2b;
-  --home-card-edge: #2d2d2d;
-  --home-card-inner: #f4f4f4;
+  --header-bg-deep: #e1b700;
+  --text: #101114;
+  --line: #aeb4bd;
+  --outer-line: #2a2d33;
+  --home-card-edge: #2f333b;
+  --home-card-inner: #eef1f5;
+  --surface-0: #f2f4f7;
+  --surface-1: #e5e9ef;
+  --surface-2: #d8dee7;
+  --ink-soft: #2f343c;
   --energy-red: #ff3b30;
   --energy-orange: #ff7a00;
 }
@@ -17,10 +22,10 @@ body {
   margin: 0;
   min-height: 100vh;
   background:
-    radial-gradient(circle at 12% 18%, rgba(255, 210, 26, 0.3), transparent 35%),
-    radial-gradient(circle at 88% 82%, rgba(255, 255, 255, 0.28), transparent 42%),
-    linear-gradient(165deg, #9ea6b0 0%, #b3bac3 34%, #9fa6af 100%);
-  font-family: Arial, Helvetica, sans-serif;
+    radial-gradient(circle at 12% 18%, rgba(255, 211, 25, 0.34), transparent 38%),
+    radial-gradient(circle at 82% 78%, rgba(255, 245, 194, 0.24), transparent 44%),
+    linear-gradient(158deg, #959ea9 0%, #afb7c1 38%, #959ea9 100%);
+  font-family: "Manrope", "Segoe UI", sans-serif;
   color: var(--text);
   position: relative;
 }
@@ -31,13 +36,10 @@ body::before {
   inset: 0;
   pointer-events: none;
   background:
-    repeating-linear-gradient(
-      -35deg,
-      rgba(255, 255, 255, 0.06) 0 8px,
-      rgba(0, 0, 0, 0) 8px 20px
-    );
+    radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.08), transparent 45%),
+    radial-gradient(circle at 78% 74%, rgba(0, 0, 0, 0.08), transparent 50%);
   mix-blend-mode: soft-light;
-  opacity: 0.45;
+  opacity: 0.42;
 }
 
 .reward-hud {
@@ -138,7 +140,7 @@ body::before {
   border: 0;
   border-radius: 0;
   background: transparent;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 211, 25, 0.72);
   font: 900 clamp(16rem, 24vw, 28rem)/0.8 "Arial Black", Arial, Helvetica, sans-serif;
   display: flex;
   align-items: center;
@@ -150,12 +152,31 @@ body::before {
   top: 43%;
   transform: translateY(-50%);
   z-index: 5;
-  text-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
+  text-shadow: 0 8px 24px rgba(0, 0, 0, 0.38);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease, transform 200ms ease, color 180ms ease;
 }
 
 .carousel-caret-btn:disabled {
   opacity: 0.25;
   cursor: default;
+}
+
+.carousel-stage:hover .carousel-caret-btn:not(:disabled),
+.carousel-stage:focus-within .carousel-caret-btn:not(:disabled) {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.carousel-stage:hover #overviewPrevBtn,
+.carousel-stage:focus-within #overviewPrevBtn {
+  transform: translate(-3px, -50%);
+}
+
+.carousel-stage:hover #overviewNextBtn,
+.carousel-stage:focus-within #overviewNextBtn {
+  transform: translate(3px, -50%);
 }
 
 .carousel-stage #overviewPrevBtn {
@@ -207,15 +228,16 @@ body::before {
   flex: 0 0 12px;
   display: block;
   border-radius: 999px;
-  border: 2px solid #1b1b1b;
-  background: #bcbcbc;
+  border: 1px solid #262a31;
+  background: #a9b0ba;
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
 }
 
 .carousel-dot.is-active {
-  background: #ffd319;
+  background: linear-gradient(180deg, #ffe36a 0%, #f3c608 100%);
+  box-shadow: 0 0 0 2px rgba(255, 211, 25, 0.24);
 }
 
 .panel-title {
@@ -224,12 +246,12 @@ body::before {
   text-align: center;
   font-size: clamp(1.3rem, 2.5vw, 2rem);
   font-weight: 800;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
   background:
-    linear-gradient(105deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0) 35%),
-    linear-gradient(180deg, #ffe457 0%, var(--header-bg) 56%, #e4ba00 100%);
+    linear-gradient(105deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0) 38%),
+    linear-gradient(180deg, #ffe774 0%, var(--header-bg) 55%, var(--header-bg-deep) 100%);
   border: 0;
-  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.22);
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.2);
 }
 
 .mission-grid {
@@ -265,7 +287,7 @@ body::before {
 .mission-text {
   flex: 1;
   min-width: 0;
-  font: 600 clamp(0.98rem, 1.12vw, 1.16rem)/1.35 Arial, Helvetica, sans-serif;
+  font: 600 clamp(0.98rem, 1.12vw, 1.16rem)/1.35 "Manrope", "Segoe UI", sans-serif;
   color: #151515;
   padding-left: 18px;
   position: relative;
@@ -293,11 +315,11 @@ body::before {
 .mission-add-btn {
   position: static;
   display: block;
-  border: 1px dashed #4b4b4b;
+  border: 1px dashed #4d5561;
   border-radius: 10px;
-  background: #e4e4e4;
+  background: linear-gradient(180deg, #eff2f6 0%, #dfe4ea 100%);
   color: #1a1a1a;
-  font: 700 0.95rem/1 Arial, Helvetica, sans-serif;
+  font: 700 0.95rem/1 "Manrope", "Segoe UI", sans-serif;
   padding: 10px 12px;
   width: fit-content;
   margin: 12px auto 0;
@@ -388,6 +410,10 @@ body::before {
   position: relative;
 }
 
+.ops-row:hover td {
+  background: linear-gradient(180deg, #fff5c9 0%, #ffe57a 100%);
+}
+
 .ops-cell-task {
   display: flex;
   align-items: center;
@@ -458,11 +484,11 @@ body::before {
 .ops-add-btn {
   position: static;
   display: block;
-  border: 1px dashed #4b4b4b;
+  border: 1px dashed #4d5561;
   border-radius: 10px;
-  background: #e4e4e4;
+  background: linear-gradient(180deg, #eff2f6 0%, #dfe4ea 100%);
   color: #1a1a1a;
-  font: 700 0.95rem/1 Arial, Helvetica, sans-serif;
+  font: 700 0.95rem/1 "Manrope", "Segoe UI", sans-serif;
   padding: 10px 12px;
   width: fit-content;
   margin: 12px auto 0;
@@ -481,15 +507,15 @@ body::before {
 #overviewOps,
 .home-card {
   background:
-    linear-gradient(155deg, rgba(255, 255, 255, 0.3), transparent 30%),
-    linear-gradient(180deg, #e8e8e8 0%, #d7d7d7 100%);
-  border: 1px solid var(--home-card-edge);
+    linear-gradient(150deg, rgba(255, 255, 255, 0.34), transparent 35%),
+    linear-gradient(180deg, var(--surface-0) 0%, var(--surface-1) 100%);
+  border: 1px solid #323742;
   border-radius: 18px;
   padding: 18px;
   box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.6) inset,
-    0 26px 48px rgba(0, 0, 0, 0.22);
-  transition: transform 140ms ease, box-shadow 140ms ease;
+    0 1px 0 rgba(255, 255, 255, 0.66) inset,
+    0 22px 44px rgba(0, 0, 0, 0.2);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
   position: relative;
   overflow: hidden;
 }
@@ -497,10 +523,11 @@ body::before {
 #overviewPage:hover,
 #overviewOps:hover,
 .home-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.7) inset,
-    0 30px 56px rgba(0, 0, 0, 0.26);
+    0 1px 0 rgba(255, 255, 255, 0.74) inset,
+    0 26px 52px rgba(0, 0, 0, 0.24);
+  border-color: #252932;
 }
 
 #overviewPage .panel-title,
@@ -510,7 +537,7 @@ body::before {
 }
 
 .mission-grid {
-  background: linear-gradient(180deg, #f7f7f7 0%, #ececec 100%);
+  background: linear-gradient(180deg, #fbfbfc 0%, #f0f2f5 100%);
   border: 1px solid #8f8f8f;
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
@@ -518,7 +545,7 @@ body::before {
 }
 
 .ops-table {
-  background: linear-gradient(180deg, #f6f6f6 0%, #ececec 100%);
+  background: linear-gradient(180deg, #fbfbfc 0%, #f0f2f5 100%);
   border: 1px solid #8f8f8f;
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
@@ -530,7 +557,7 @@ body::before {
 }
 
 .reminder-content {
-  background: linear-gradient(180deg, #f8f8f8 0%, #ededed 100%);
+  background: linear-gradient(180deg, #fbfbfc 0%, #f0f2f5 100%);
   border: 1px solid #8f8f8f;
   border-top: 0;
   border-bottom-left-radius: 12px;
@@ -569,11 +596,11 @@ body::before {
   display: block;
   width: fit-content;
   margin: 12px auto 0;
-  border: 1px dashed #4b4b4b;
+  border: 1px dashed #4d5561;
   border-radius: 10px;
-  background: #e4e4e4;
+  background: linear-gradient(180deg, #eff2f6 0%, #dfe4ea 100%);
   color: #1a1a1a;
-  font: 700 0.95rem/1 Arial, Helvetica, sans-serif;
+  font: 700 0.95rem/1 "Manrope", "Segoe UI", sans-serif;
   padding: 10px 12px;
   opacity: 0;
   pointer-events: none;
@@ -661,11 +688,11 @@ body::before {
 }
 
 .week-panel {
-  background: linear-gradient(180deg, #e3e3e3 0%, #d5d5d5 100%);
-  border: 1px solid #6f6f6f;
+  background: linear-gradient(180deg, #eef2f7 0%, #dde4ee 100%);
+  border: 1px solid #434b58;
   border-radius: 16px;
   padding: 18px;
-  box-shadow: 0 20px 38px rgba(0, 0, 0, 0.22);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.22);
 }
 
 .week-caret-btn {
@@ -676,9 +703,23 @@ body::before {
   font-size: clamp(21rem, 30vw, 36rem);
   top: 30vh;
   transform: translateY(-50%);
-  color: rgba(22, 22, 22, 0.45);
-  text-shadow: 0 6px 16px rgba(255, 255, 255, 0.35);
+  color: rgba(255, 211, 25, 0.72);
+  text-shadow: 0 7px 20px rgba(0, 0, 0, 0.36);
   z-index: 20;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+
+.week-caret-btn:disabled {
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
+.week-carousel-stage:hover .week-caret-btn:not(:disabled),
+.week-carousel-stage:focus-within .week-caret-btn:not(:disabled) {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 #prevWeekBtn.week-caret-btn {
@@ -720,7 +761,7 @@ body::before {
 .go-btn {
   display: inline-block;
   min-width: min(720px, 92vw);
-  border: 3px solid #111;
+  border: 2px solid #171a20;
   border-radius: 14px;
   background: linear-gradient(180deg, #ffe54a 0%, #f5cf00 60%, #d8b400 100%);
   color: #090909;
@@ -728,7 +769,7 @@ body::before {
   letter-spacing: 0.05em;
   text-transform: uppercase;
   padding: clamp(20px, 3.2vw, 34px) 18px;
-  box-shadow: 0 10px 0 #1c1c1c, 0 18px 32px rgba(0, 0, 0, 0.35), 0 0 0 3px rgba(255, 122, 0, 0.15);
+  box-shadow: 0 8px 0 #242933, 0 16px 30px rgba(0, 0, 0, 0.32), 0 0 0 2px rgba(255, 211, 25, 0.2);
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
   cursor: pointer;
   transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
@@ -737,7 +778,7 @@ body::before {
 .go-btn:hover {
   filter: brightness(1.05);
   transform: translateY(-2px);
-  box-shadow: 0 12px 0 #1c1c1c, 0 22px 34px rgba(0, 0, 0, 0.4), 0 0 0 4px rgba(255, 59, 48, 0.18);
+  box-shadow: 0 10px 0 #242933, 0 20px 34px rgba(0, 0, 0, 0.36), 0 0 0 3px rgba(255, 211, 25, 0.24);
 }
 
 .go-btn:active {
@@ -760,10 +801,10 @@ body::before {
   padding: 12px 14px;
   border: 1px solid #8f8f8f;
   border-radius: 10px;
-  background: linear-gradient(180deg, #f7f7f7 0%, #e5e5e5 100%);
+  background: linear-gradient(180deg, #fff8d8 0%, #f4f6f9 68%, #e7ecf3 100%);
   color: #111;
   text-align: center;
-  font: 700 clamp(1.1rem, 2vw, 1.7rem)/1.1 Arial, Helvetica, sans-serif;
+  font: 700 clamp(1.1rem, 2vw, 1.7rem)/1.1 "Manrope", "Segoe UI", sans-serif;
   letter-spacing: 0.04em;
 }
 
@@ -836,7 +877,7 @@ body::before {
 .week-days,
 .week-notes {
   padding: 16px;
-  background: #efefef;
+  background: linear-gradient(180deg, #f7f9fc 0%, #ebf0f6 100%);
   border: 1px solid #9d9d9d;
   border-radius: 12px;
   margin-bottom: 14px;
@@ -1060,7 +1101,7 @@ body::before {
 
 .week-days-table th {
   text-align: left;
-  background: #e3e3e3;
+  background: linear-gradient(180deg, #ffe980 0%, #f5d63c 58%, #e8c318 100%);
   font-size: 1rem;
   letter-spacing: 0.035em;
   font-weight: 800;
@@ -1080,15 +1121,15 @@ body::before {
 }
 
 .week-days-table tbody tr:nth-child(odd) td {
-  background: #f2f2f2;
+  background: #f8f9fb;
 }
 
 .week-days-table tbody tr:nth-child(even) td {
-  background: #ececec;
+  background: #f0f3f7;
 }
 
 .week-days-table tbody tr:hover td {
-  background: #e4e4e4;
+  background: linear-gradient(180deg, #fff5c9 0%, #ffe57a 100%);
 }
 
 .week-days-table tbody tr.dragging td {
@@ -1096,7 +1137,11 @@ body::before {
 }
 
 .week-days-table tbody tr.is-drag-over td {
-  background: #dddddd;
+  background: #ffeeb0;
+}
+
+.day-hours-table tbody tr:hover td {
+  background: linear-gradient(180deg, #fff5c9 0%, #ffe57a 100%);
 }
 
 .week-days-table tbody td:first-child {
@@ -1187,7 +1232,7 @@ body::before {
   border-top-width: 1px;
   border-radius: 10px;
   padding: 10px 12px;
-  font: 600 1.02rem/1.45 Arial, Helvetica, sans-serif;
+  font: 600 1.02rem/1.45 "Manrope", "Segoe UI", sans-serif;
   color: #171717;
   background: #fff;
 }
@@ -1217,7 +1262,7 @@ body::before {
 
 .day-focus-text {
   margin: 0;
-  font: 700 1.05rem/1.4 Arial, Helvetica, sans-serif;
+  font: 700 1.05rem/1.4 "Manrope", "Segoe UI", sans-serif;
   color: #171717;
 }
 
@@ -1240,7 +1285,7 @@ body::before {
   border-radius: 8px;
   background: #fff;
   color: #151515;
-  font: 600 1rem/1.25 Arial, Helvetica, sans-serif;
+  font: 600 1rem/1.25 "Manrope", "Segoe UI", sans-serif;
   padding: 8px 10px;
 }
 
@@ -1269,7 +1314,7 @@ body::before {
   margin: 0;
   min-height: 1.25em;
   padding-right: 112px;
-  font: 600 1rem/1.35 Arial, Helvetica, sans-serif;
+  font: 600 1rem/1.35 "Manrope", "Segoe UI", sans-serif;
   color: #171717;
   white-space: pre-wrap;
   word-break: break-word;
@@ -1330,7 +1375,7 @@ body::before {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font: 700 0.92rem/1.2 Arial, Helvetica, sans-serif;
+  font: 700 0.92rem/1.2 "Manrope", "Segoe UI", sans-serif;
   letter-spacing: 0.01em;
   color: #4a4a4a;
 }
@@ -1436,7 +1481,7 @@ body::before {
   border-radius: 8px;
   background: #fff;
   color: #111;
-  font: 600 0.98rem/1.35 Arial, Helvetica, sans-serif;
+  font: 600 0.98rem/1.35 "Manrope", "Segoe UI", sans-serif;
   padding: 8px 10px;
 }
 
@@ -1456,7 +1501,7 @@ body::before {
   border: 1px solid #707070;
   border-radius: 8px;
   padding: 8px 12px;
-  font: 700 0.92rem/1 Arial, Helvetica, sans-serif;
+  font: 700 0.92rem/1 "Manrope", "Segoe UI", sans-serif;
   cursor: pointer;
 }
 
@@ -1476,16 +1521,16 @@ body::before {
 
 .week-nav-btn {
   flex: 0 0 min(240px, 70vw);
-  border: 2px solid #222;
+  border: 1px solid #242932;
   border-radius: 10px;
   background: linear-gradient(180deg, #f9db15 0%, #e9c908 100%);
   color: #121212;
-  font: 800 1rem/1 Arial, Helvetica, sans-serif;
+  font: 800 1rem/1 "Manrope", "Segoe UI", sans-serif;
   letter-spacing: 0.02em;
   padding: 12px 14px;
   cursor: pointer;
-  box-shadow: 0 5px 0 #2a2a2a;
-  transition: transform 100ms ease, box-shadow 100ms ease, filter 100ms ease;
+  box-shadow: 0 4px 0 #2b313b;
+  transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
 }
 
 .week-nav-btn:hover {
