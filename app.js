@@ -63,6 +63,7 @@ const WEEK_NOTES_STATE_KEY = "pesa_week_notes_state_v1";
 const MISSION_STATE_KEY = "pesa_mission_state_v1";
 const OPS_STATE_KEY = "pesa_ops_state_v1";
 const REMINDER_STATE_KEY = "pesa_reminder_state_v1";
+const REWARD_STATE_KEY = "pesa_reward_state_v1";
 const LOCAL_STATE_KEYS = [
   DAY_ROUTINE_ANSWERS_STATE_KEY,
   CHECKLIST_STATE_KEY,
@@ -74,6 +75,7 @@ const LOCAL_STATE_KEYS = [
   MISSION_STATE_KEY,
   OPS_STATE_KEY,
   REMINDER_STATE_KEY,
+  REWARD_STATE_KEY,
   WEEK_TITLE_STATE_KEY,
   WEEK_NOTES_STATE_KEY
 ];
@@ -176,6 +178,179 @@ function toggleMobileActionPanelFromTarget(target) {
 const DEFAULT_REMINDER_HTML = reminderContentEl ? reminderContentEl.innerHTML : "";
 let reminderEditing = false;
 let activeRoutineModalClose = null;
+let rewardHudEl = null;
+let cherriesValueEl = null;
+let peachesValueEl = null;
+let rewardState = { cherries: 0, peaches: 0 };
+let displayedRewardState = { cherries: 0, peaches: 0 };
+const rewardCounterTimers = { cherries: null, peaches: null };
+
+function loadRewardState() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(REWARD_STATE_KEY) || "{}");
+    return {
+      cherries: Number.isFinite(parsed?.cherries) ? Math.max(0, Math.floor(parsed.cherries)) : 0,
+      peaches: Number.isFinite(parsed?.peaches) ? Math.max(0, Math.floor(parsed.peaches)) : 0
+    };
+  } catch (_) {
+    return { cherries: 0, peaches: 0 };
+  }
+}
+
+function saveRewardState() {
+  saveLocalStateValue(REWARD_STATE_KEY, JSON.stringify(rewardState));
+}
+
+function renderRewardHudValues() {
+  if (cherriesValueEl) cherriesValueEl.textContent = String(displayedRewardState.cherries);
+  if (peachesValueEl) peachesValueEl.textContent = String(displayedRewardState.peaches);
+}
+
+function createRewardHud() {
+  if (rewardHudEl) return;
+  rewardState = loadRewardState();
+  displayedRewardState = { ...rewardState };
+  const hud = document.createElement("aside");
+  hud.className = "reward-hud";
+  hud.setAttribute("aria-label", "Progress rewards");
+
+  const cherriesCounter = document.createElement("div");
+  cherriesCounter.className = "reward-counter reward-counter-cherries";
+  cherriesCounter.dataset.rewardType = "cherries";
+  cherriesCounter.innerHTML = "<span class=\"reward-counter-emoji\" aria-hidden=\"true\">🍒</span><span class=\"reward-counter-value\">0</span>";
+  cherriesValueEl = cherriesCounter.querySelector(".reward-counter-value");
+
+  const peachesCounter = document.createElement("div");
+  peachesCounter.className = "reward-counter reward-counter-peaches";
+  peachesCounter.dataset.rewardType = "peaches";
+  peachesCounter.innerHTML = "<span class=\"reward-counter-emoji\" aria-hidden=\"true\">🍑</span><span class=\"reward-counter-value\">0</span>";
+  peachesValueEl = peachesCounter.querySelector(".reward-counter-value");
+
+  hud.append(peachesCounter, cherriesCounter);
+  document.body.append(hud);
+  rewardHudEl = hud;
+  renderRewardHudValues();
+}
+
+function animateRewardCounterTo(type, targetValue) {
+  if (rewardCounterTimers[type]) {
+    window.clearTimeout(rewardCounterTimers[type]);
+    rewardCounterTimers[type] = null;
+  }
+  const step = () => {
+    const currentValue = displayedRewardState[type];
+    if (currentValue === targetValue) {
+      rewardCounterTimers[type] = null;
+      return;
+    }
+    displayedRewardState[type] += currentValue < targetValue ? 1 : -1;
+    renderRewardHudValues();
+    rewardCounterTimers[type] = window.setTimeout(step, 36);
+  };
+  step();
+}
+
+function syncRewardStateFromStorage() {
+  rewardState = loadRewardState();
+}
+
+function rebuildRewardsFromCheckedItems() {
+  const checklistState = loadChecklistItemsState();
+  const dayDoneState = loadDayDoneState();
+  const dayHourDoneState = loadDayHourDoneState();
+
+  const weeklyChecked = Object.values(checklistState).reduce((sum, items) => {
+    if (!Array.isArray(items)) return sum;
+    return sum + items.filter((item) => Boolean(item?.done)).length;
+  }, 0);
+
+  const dayIntentChecked = Object.values(dayDoneState).reduce((sum, pageState) => {
+    if (!pageState || typeof pageState !== "object") return sum;
+    return sum + Object.values(pageState).filter(Boolean).length;
+  }, 0);
+
+  const hourlyChecked = Object.values(dayHourDoneState).reduce((sum, pageState) => {
+    if (!pageState || typeof pageState !== "object") return sum;
+    return sum + Object.values(pageState).reduce((daySum, dayState) => {
+      if (!dayState || typeof dayState !== "object") return daySum;
+      return daySum + Object.values(dayState).filter(Boolean).length;
+    }, 0);
+  }, 0);
+
+  rewardState = {
+    cherries: hourlyChecked * 10,
+    peaches: (weeklyChecked + dayIntentChecked) * 5
+  };
+  displayedRewardState = { ...rewardState };
+  renderRewardHudValues();
+  saveRewardState();
+  return { ...rewardState };
+}
+
+function animateRewardFountain(fromEl, type) {
+  if (!(fromEl instanceof Element) || !rewardHudEl) return;
+  const target = rewardHudEl.querySelector(`[data-reward-type="${type}"]`);
+  if (!(target instanceof Element)) return;
+  const emoji = type === "cherries" ? "🍒" : "🍑";
+  const fromRect = fromEl.getBoundingClientRect();
+  const targetRect = target.getBoundingClientRect();
+  const startX = fromRect.left + (fromRect.width / 2);
+  const startY = fromRect.top + (fromRect.height / 2);
+  const endX = targetRect.left + (targetRect.width / 2);
+  const endY = targetRect.top + (targetRect.height / 2);
+
+  const particles = 12;
+  const durationMs = 1100;
+  const spreadPx = 130;
+  const burstBaseY = -65;
+  const burstRangeY = 105;
+  const targetJitterPx = 14;
+  for (let i = 0; i < particles; i += 1) {
+    const particle = document.createElement("span");
+    particle.className = "reward-particle";
+    particle.textContent = emoji;
+    particle.style.left = `${startX}px`;
+    particle.style.top = `${startY}px`;
+    document.body.append(particle);
+
+    const spread = (Math.random() - 0.5) * spreadPx;
+    const burstX = spread;
+    const burstY = burstBaseY - (Math.random() * burstRangeY);
+    const toX = (endX - startX) + ((Math.random() - 0.5) * targetJitterPx);
+    const toY = (endY - startY) + ((Math.random() - 0.5) * targetJitterPx);
+
+    particle.animate(
+      [
+        { transform: "translate(-50%, -50%) translate3d(0, 0, 0) scale(0.7)", opacity: 0 },
+        { transform: `translate(-50%, -50%) translate3d(${burstX}px, ${burstY}px, 0) scale(1)`, opacity: 1, offset: 0.28 },
+        { transform: `translate(-50%, -50%) translate3d(${toX}px, ${toY}px, 0) scale(0.95)`, opacity: 0.96 }
+      ],
+      {
+        duration: durationMs,
+        easing: "cubic-bezier(0.15, 0.8, 0.2, 1)",
+        fill: "forwards"
+      }
+    ).addEventListener("finish", () => {
+      particle.remove();
+    });
+  }
+}
+
+function awardReward(type, amount, sourceEl) {
+  syncRewardStateFromStorage();
+  if (type === "cherries") {
+    rewardState.cherries = Math.max(0, rewardState.cherries + amount);
+  } else {
+    rewardState.peaches = Math.max(0, rewardState.peaches + amount);
+  }
+  saveRewardState();
+  if (amount > 0) {
+    animateRewardFountain(sourceEl, type);
+  }
+  if (amount !== 0) {
+    animateRewardCounterTo(type, rewardState[type]);
+  }
+}
 
 function saveLocalStateValue(key, value) {
   localStorage.setItem(key, value);
@@ -1405,6 +1580,7 @@ function renderChecklist(containerEl, page, items) {
         }
       }
       saveChecklistItemsForPage(page, next);
+      awardReward("peaches", input.checked ? 5 : -5, input);
       renderChecklist(containerEl, page, items);
     });
 
@@ -1864,6 +2040,7 @@ function renderDayTable(containerEl, page, days, onDaySelect = null) {
       delete nextPageState[String(idx)];
       current[String(page)] = nextPageState;
       saveDayDoneState(current);
+      awardReward("peaches", input.checked ? 5 : -5, input);
     });
     doneTd.append(input);
 
@@ -2369,6 +2546,7 @@ function createDayHourRows(tableBodyEl, weekPage, day) {
       );
       doneInput.addEventListener("change", () => {
         saveDayHourDoneValue(weekPage, day, hourLabel, doneInput.checked);
+        awardReward("cherries", doneInput.checked ? 10 : -10, doneInput);
       });
       doneTd.append(doneInput);
     }
@@ -2686,7 +2864,9 @@ function createDaySlide(entry) {
   const dayDate = document.createElement("p");
   dayDate.className = "week-date-range day-date-line";
   const dayIntentValue = getDayIntentForPage(week, entry.day);
-  dayDate.textContent = formatDayDateForEntry(entry);
+  const formattedDayDate = formatDayDateForEntry(entry);
+  const formattedDayIntent = formatDayIntentTitleCase(String(dayIntentValue || "").trim());
+  dayDate.textContent = formattedDayIntent ? `${formattedDayDate}: ${formattedDayIntent}` : formattedDayDate;
 
   const hoursCard = document.createElement("div");
   hoursCard.className = "week-days";
@@ -2909,6 +3089,8 @@ window.addEventListener("resize", () => {
 });
 
 async function bootApp() {
+  createRewardHud();
+  window.seedRewardsFromCheckedItems = rebuildRewardsFromCheckedItems;
   await initSupabaseStateSync();
   initWeekCarousel();
   migrateDayIntentsToTitleCase();
