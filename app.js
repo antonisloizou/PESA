@@ -1529,6 +1529,38 @@ function formatMonthLabel(date) {
   return date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
 }
 
+function getPrimaryMonthDateForRange(range) {
+  if (!range?.start || !range?.end) return null;
+
+  const cursor = new Date(range.start.getFullYear(), range.start.getMonth(), range.start.getDate(), 0, 0, 0, 0);
+  const lastDay = new Date(range.end.getFullYear(), range.end.getMonth(), range.end.getDate(), 0, 0, 0, 0);
+  const countsByMonth = new Map();
+
+  while (cursor <= lastDay) {
+    const key = `${cursor.getFullYear()}-${cursor.getMonth()}`;
+    const existing = countsByMonth.get(key) || {
+      count: 0,
+      date: new Date(cursor.getFullYear(), cursor.getMonth(), 1, 0, 0, 0, 0)
+    };
+    existing.count += 1;
+    countsByMonth.set(key, existing);
+    cursor.setDate(cursor.getDate() + 1);
+  }
+
+  let primaryMonth = null;
+  countsByMonth.forEach((entry) => {
+    if (
+      !primaryMonth ||
+      entry.count > primaryMonth.count ||
+      (entry.count === primaryMonth.count && entry.date > primaryMonth.date)
+    ) {
+      primaryMonth = entry;
+    }
+  });
+
+  return primaryMonth?.date || null;
+}
+
 function formatActivePeriodRows(label, mode = progressViewMode) {
   if (mode === "monthly") {
     const match = String(label || "").match(/^([A-Za-z]{3})\s+(\d{4})$/);
@@ -1562,12 +1594,13 @@ function getProgressPeriods(mode = progressViewMode) {
 
     weeksData.forEach((week) => {
       const range = parseRangeToDates(week.dateRange || "");
-      if (!range?.start) return;
-      const key = `${range.start.getFullYear()}-${range.start.getMonth()}`;
+      const primaryMonthDate = getPrimaryMonthDateForRange(range);
+      if (!primaryMonthDate) return;
+      const key = `${primaryMonthDate.getFullYear()}-${primaryMonthDate.getMonth()}`;
       const existing = grouped.get(key) || {
         key,
-        label: formatMonthLabel(range.start),
-        shortLabel: range.start.toLocaleDateString("en-US", { month: "short" }),
+        label: formatMonthLabel(primaryMonthDate),
+        shortLabel: primaryMonthDate.toLocaleDateString("en-US", { month: "short" }),
         pages: []
       };
       existing.pages.push(week.page);
