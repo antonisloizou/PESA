@@ -72,6 +72,10 @@
       <div class="carousel-dots" id="overviewDots" aria-label="Overview sections"></div>
     </section>
 
+    <section class="panel progress-link-panel" id="overviewProgressLink">
+      <button type="button" id="openProgressBtn" class="progress-link-btn">Track my progress</button>
+    </section>
+
     <section class="panel week-carousel-shell" id="weekPage" hidden>
       <div class="carousel-stage week-carousel-stage">
         <button type="button" id="prevWeekBtn" class="carousel-caret-btn week-caret-btn" aria-label="Previous week">&#8249;</button>
@@ -102,6 +106,79 @@
       <div class="week-nav">
         <button type="button" id="dayHomeBtn" class="week-nav-btn">Home</button>
         <button type="button" id="dayWeekBtn" class="week-nav-btn">Back to Week</button>
+      </div>
+    </section>
+
+    <section class="panel progress-page" id="progressPage" hidden>
+      <div class="progress-shell">
+        <div class="progress-header">
+          <h2 class="panel-title progress-title">P.E.S.A. Progress</h2>
+        </div>
+
+        <div class="progress-view-toggle" role="tablist" aria-label="Progress time range">
+          <button type="button" id="weeklyProgressBtn" class="progress-toggle-btn is-active" aria-pressed="true">Weekly</button>
+          <button type="button" id="monthlyProgressBtn" class="progress-toggle-btn" aria-pressed="false">Monthly</button>
+        </div>
+
+        <div class="progress-hero">
+          <div class="progress-ring-card">
+            <div class="progress-ring" id="progressPeachRing" aria-hidden="true">
+              <div class="progress-ring-gap">
+                <div class="progress-ring-middle" id="progressCherryRing">
+                  <div class="progress-ring-inner">
+                    <div class="progress-ring-metrics">
+                      <div class="progress-ring-metric">
+                        <span class="progress-ring-metric-emoji" aria-hidden="true">🍑</span>
+                        <span class="progress-ring-metric-value" id="progressPeachRingValue">0%</span>
+                      </div>
+                      <div class="progress-ring-metric">
+                        <span class="progress-ring-metric-emoji" aria-hidden="true">🍒</span>
+                        <span class="progress-ring-metric-value" id="progressCherryRingValue">0%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="progress-summary-card" id="progressSummaryCard">
+            <div class="progress-summary-stat progress-summary-stat-highlight">
+              <span class="progress-summary-label progress-summary-label-nowrap">Active period</span>
+              <strong class="progress-summary-value progress-summary-active-value progress-summary-row progress-summary-row-3" id="progressActivePeriodStartValue"></strong>
+              <strong class="progress-summary-value progress-summary-active-value progress-summary-row progress-summary-row-4" id="progressActivePeriodEndValue"></strong>
+              <strong class="progress-summary-value progress-summary-active-value progress-summary-row progress-summary-row-5" id="progressActivePeriodYearValue"></strong>
+            </div>
+            <div class="progress-summary-stat">
+              <span class="progress-summary-label">Completed goals</span>
+              <span class="progress-summary-row progress-summary-row-3" aria-hidden="true"></span>
+              <strong class="progress-summary-value progress-summary-row progress-summary-row-4" id="progressCompletedValue">0</strong>
+              <div class="progress-summary-dual" id="progressCompletedDual" hidden>
+                <div class="progress-summary-dual-row"><span aria-hidden="true">🍑</span><span id="progressCompletedPeachValue">0</span></div>
+                <div class="progress-summary-dual-row"><span aria-hidden="true">🍒</span><span id="progressCompletedCherryValue">0</span></div>
+              </div>
+              <span class="progress-summary-row progress-summary-row-5" aria-hidden="true"></span>
+            </div>
+            <div class="progress-summary-stat">
+              <span class="progress-summary-label progress-summary-label-nowrap">Total goals</span>
+              <span class="progress-summary-row progress-summary-row-3" aria-hidden="true"></span>
+              <strong class="progress-summary-value progress-summary-row progress-summary-row-4" id="progressTotalValue">0</strong>
+              <div class="progress-summary-dual" id="progressTotalDual" hidden>
+                <div class="progress-summary-dual-row"><span aria-hidden="true">🍑</span><span id="progressTotalPeachValue">0</span></div>
+                <div class="progress-summary-dual-row"><span aria-hidden="true">🍒</span><span id="progressTotalCherryValue">0</span></div>
+              </div>
+              <span class="progress-summary-row progress-summary-row-5" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="progress-chart-card">
+          <div class="progress-bars" id="progressBars" aria-live="polite"></div>
+        </div>
+
+        <div class="week-nav">
+          <button type="button" id="progressHomeBtn" class="week-nav-btn">Home</button>
+        </div>
       </div>
     </section>
   </main>

@@ -11,6 +11,8 @@ const strategicRemindersEl = document.getElementById("strategicReminders");
 const overviewPrevBtnEl = document.getElementById("overviewPrevBtn");
 const overviewNextBtnEl = document.getElementById("overviewNextBtn");
 const overviewDotsEl = document.getElementById("overviewDots");
+const overviewProgressLinkEl = document.getElementById("overviewProgressLink");
+const openProgressBtnEl = document.getElementById("openProgressBtn");
 const overviewViewportEl = overviewCarouselEl?.querySelector(".carousel-viewport");
 const overviewTrackEl = overviewCarouselEl?.querySelector(".carousel-track");
 const reminderContentEl = document.getElementById("reminderContent");
@@ -34,6 +36,27 @@ const prevDayBtnEl = document.getElementById("prevDayBtn");
 const nextDayBtnEl = document.getElementById("nextDayBtn");
 const dayHomeBtnEl = document.getElementById("dayHomeBtn");
 const dayWeekBtnEl = document.getElementById("dayWeekBtn");
+const progressPageEl = document.getElementById("progressPage");
+const progressHomeBtnEl = document.getElementById("progressHomeBtn");
+const weeklyProgressBtnEl = document.getElementById("weeklyProgressBtn");
+const monthlyProgressBtnEl = document.getElementById("monthlyProgressBtn");
+const progressPeachRingEl = document.getElementById("progressPeachRing");
+const progressCherryRingEl = document.getElementById("progressCherryRing");
+const progressPeachRingValueEl = document.getElementById("progressPeachRingValue");
+const progressCherryRingValueEl = document.getElementById("progressCherryRingValue");
+const progressSummaryCardEl = document.getElementById("progressSummaryCard");
+const progressCompletedValueEl = document.getElementById("progressCompletedValue");
+const progressCompletedDualEl = document.getElementById("progressCompletedDual");
+const progressCompletedPeachValueEl = document.getElementById("progressCompletedPeachValue");
+const progressCompletedCherryValueEl = document.getElementById("progressCompletedCherryValue");
+const progressTotalValueEl = document.getElementById("progressTotalValue");
+const progressTotalDualEl = document.getElementById("progressTotalDual");
+const progressTotalPeachValueEl = document.getElementById("progressTotalPeachValue");
+const progressTotalCherryValueEl = document.getElementById("progressTotalCherryValue");
+const progressActivePeriodStartValueEl = document.getElementById("progressActivePeriodStartValue");
+const progressActivePeriodEndValueEl = document.getElementById("progressActivePeriodEndValue");
+const progressActivePeriodYearValueEl = document.getElementById("progressActivePeriodYearValue");
+const progressBarsEl = document.getElementById("progressBars");
 
 const TOTAL_PAGES = 35;
 let currentPage = 1;
@@ -150,6 +173,7 @@ let currentView = "overview";
 let daySlideIndex = 0;
 let dayAnimating = false;
 let dayTransitionEndHandler = null;
+let progressViewMode = "weekly";
 const MOBILE_ACTIONS_MEDIA_QUERY = "(max-width: 700px)";
 
 function isMobileActionsViewport() {
@@ -354,6 +378,7 @@ function awardReward(type, amount, sourceEl) {
 
 function saveLocalStateValue(key, value) {
   localStorage.setItem(key, value);
+  renderProgressDashboard();
   scheduleSupabaseStateSync();
 }
 
@@ -1440,26 +1465,40 @@ function renderMission() {
 
 function pageStateFromUrl() {
   const params = new URLSearchParams(window.location.search);
+  const view = params.get("view");
+  if (view === "progress") {
+    const mode = params.get("mode") === "monthly" ? "monthly" : "weekly";
+    return { page: 1, dayIndex: null, view: "progress", mode };
+  }
   const raw = Number(params.get("page"));
   const page = Number.isFinite(raw) ? Math.max(1, Math.min(TOTAL_PAGES, Math.trunc(raw))) : 1;
-  if (!params.has("day")) return { page, dayIndex: null };
+  if (!params.has("day")) return { page, dayIndex: null, view: page === 1 ? "overview" : "week" };
   const rawDay = Number(params.get("day"));
-  if (!Number.isFinite(rawDay)) return { page, dayIndex: null };
+  if (!Number.isFinite(rawDay)) return { page, dayIndex: null, view: page === 1 ? "overview" : "week" };
   const dayIndex = Math.max(0, Math.min(WEEK_DAY_ORDER.length - 1, Math.trunc(rawDay)));
-  return { page, dayIndex };
+  return { page, dayIndex, view: "day" };
 }
 
-function setUrlForState(page, dayIndex = null, replace = false) {
+function setUrlForState(page, dayIndex = null, replace = false, view = null, mode = progressViewMode) {
   const url = new URL(window.location.href);
-  if (page <= 1) {
+  if (view === "progress") {
     url.searchParams.delete("page");
-  } else {
-    url.searchParams.set("page", String(page));
-  }
-  if (dayIndex === null || dayIndex === undefined) {
     url.searchParams.delete("day");
+    url.searchParams.set("view", "progress");
+    url.searchParams.set("mode", mode === "monthly" ? "monthly" : "weekly");
   } else {
-    url.searchParams.set("day", String(dayIndex));
+    url.searchParams.delete("view");
+    url.searchParams.delete("mode");
+    if (page <= 1) {
+      url.searchParams.delete("page");
+    } else {
+      url.searchParams.set("page", String(page));
+    }
+    if (dayIndex === null || dayIndex === undefined) {
+      url.searchParams.delete("day");
+    } else {
+      url.searchParams.set("day", String(dayIndex));
+    }
   }
   const method = replace ? "replaceState" : "pushState";
   window.history[method]({}, "", url);
@@ -1484,6 +1523,271 @@ function parseRangeToDates(dateRange) {
     start: new Date(y, MONTHS[startMon], Number(startDay), 0, 0, 0, 0),
     end: new Date(y, MONTHS[endMon], Number(endDay), 23, 59, 59, 999)
   };
+}
+
+function formatMonthLabel(date) {
+  return date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+}
+
+function formatActivePeriodRows(label, mode = progressViewMode) {
+  if (mode === "monthly") {
+    const match = String(label || "").match(/^([A-Za-z]{3})\s+(\d{4})$/);
+    if (match) {
+      return { start: match[1], end: "", year: match[2] };
+    }
+    return { start: String(label || ""), end: "", year: "" };
+  }
+
+  const range = parseRangeToDates(label);
+  if (!range?.start || !range?.end) {
+    return { start: String(label || ""), end: "", year: "" };
+  }
+
+  const startMonth = range.start.toLocaleDateString("en-US", { month: "short" });
+  const endMonth = range.end.toLocaleDateString("en-US", { month: "short" });
+  const startDay = range.start.getDate();
+  const endDay = range.end.getDate();
+  const year = range.end.getFullYear();
+  const start = `${startMonth} ${startDay} -`;
+  const end = startMonth === endMonth
+    ? `${endDay}`
+    : `${endMonth} ${endDay}`;
+
+  return { start, end, year: String(year) };
+}
+
+function getProgressPeriods(mode = progressViewMode) {
+  if (mode === "monthly") {
+    const grouped = new Map();
+
+    weeksData.forEach((week) => {
+      const range = parseRangeToDates(week.dateRange || "");
+      if (!range?.start) return;
+      const key = `${range.start.getFullYear()}-${range.start.getMonth()}`;
+      const existing = grouped.get(key) || {
+        key,
+        label: formatMonthLabel(range.start),
+        shortLabel: range.start.toLocaleDateString("en-US", { month: "short" }),
+        pages: []
+      };
+      existing.pages.push(week.page);
+      grouped.set(key, existing);
+    });
+
+    return [...grouped.values()];
+  }
+
+  return weeksData.map((week) => ({
+    key: `week-${week.week}`,
+    label: week.dateRange || week.title || `Week ${week.week}`,
+    shortLabel: week.dateRange || `W${week.week}`,
+    pages: [week.page]
+  }));
+}
+
+function calculateProgressStatsForPages(pages, rewardType = "peaches") {
+  if (rewardType === "cherries") {
+    const hoursState = loadDayHoursState();
+    const doneState = loadDayHourDoneState();
+    let completed = 0;
+    let total = 0;
+
+    pages.forEach((page) => {
+      const pageHoursState = hoursState[String(page)] || {};
+      const pageDoneState = doneState[String(page)] || {};
+      WEEK_DAY_ORDER.forEach((day) => {
+        const dayHoursState = pageHoursState[day] || {};
+        const dayDoneValues = pageDoneState[day] || {};
+        Object.entries(dayHoursState).forEach(([hour, value]) => {
+          if (!String(value || "").trim()) return;
+          total += 1;
+          if (Boolean(dayDoneValues[hour])) completed += 1;
+        });
+      });
+    });
+
+    const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+    return { completed, total, percentage };
+  }
+
+  const dayDoneState = loadDayDoneState();
+  let completed = 0;
+  let total = 0;
+
+  pages.forEach((page) => {
+    const items = getOrInitChecklistItemsForPage(page, getChecklistDefaultsForPage(page));
+    total += items.length + WEEK_DAY_ORDER.length;
+    completed += items.filter((item) => Boolean(item?.done)).length;
+    const pageDoneValues = dayDoneState[String(page)] || {};
+    completed += WEEK_DAY_ORDER.filter((day) => Boolean(pageDoneValues[day])).length;
+  });
+
+  const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+  return { completed, total, percentage };
+}
+
+function getCurrentProgressPeriodIndex(periods) {
+  const currentWeekPage = getCurrentWeekPage();
+  const periodIndex = periods.findIndex((period) => period.pages.includes(currentWeekPage));
+  return periodIndex >= 0 ? periodIndex : 0;
+}
+
+function renderProgressDashboard() {
+  if (
+    !progressPeachRingEl ||
+    !progressCherryRingEl ||
+    !progressPeachRingValueEl ||
+    !progressCherryRingValueEl ||
+    !progressSummaryCardEl ||
+    !progressCompletedValueEl ||
+    !progressCompletedDualEl ||
+    !progressCompletedPeachValueEl ||
+    !progressCompletedCherryValueEl ||
+    !progressTotalValueEl ||
+    !progressTotalDualEl ||
+    !progressTotalPeachValueEl ||
+    !progressTotalCherryValueEl ||
+    !progressActivePeriodStartValueEl ||
+    !progressActivePeriodEndValueEl ||
+    !progressActivePeriodYearValueEl ||
+    !progressBarsEl
+  ) {
+    return;
+  }
+
+  const periods = getProgressPeriods(progressViewMode);
+  const stats = periods.map((period) => ({
+    ...period,
+    peaches: calculateProgressStatsForPages(period.pages, "peaches"),
+    cherries: calculateProgressStatsForPages(period.pages, "cherries")
+  }));
+  const activeIndex = getCurrentProgressPeriodIndex(periods);
+  const emptyMetric = { completed: 0, total: 0, percentage: 0 };
+  const activePeriod = stats[activeIndex] || { label: "-", peaches: emptyMetric, cherries: emptyMetric };
+  const activePeaches = activePeriod.peaches || emptyMetric;
+  const activeCherries = activePeriod.cherries || emptyMetric;
+
+  progressPeachRingEl.style.setProperty("--progress-value", `${activePeaches.percentage}%`);
+  progressCherryRingEl.style.setProperty("--progress-value", `${activeCherries.percentage}%`);
+  progressPeachRingValueEl.textContent = `${activePeaches.percentage}%`;
+  progressCherryRingValueEl.textContent = `${activeCherries.percentage}%`;
+  const activePeriodRows = formatActivePeriodRows(activePeriod.label, progressViewMode);
+  const isMonthlySummary = progressViewMode === "monthly";
+  progressSummaryCardEl.classList.toggle("is-monthly-view", isMonthlySummary);
+  progressSummaryCardEl.classList.add("is-split-metrics");
+  progressCompletedValueEl.hidden = true;
+  progressTotalValueEl.hidden = true;
+  progressCompletedDualEl.hidden = false;
+  progressTotalDualEl.hidden = false;
+  progressCompletedValueEl.textContent = String(activePeaches.completed);
+  progressTotalValueEl.textContent = String(activePeaches.total);
+  progressCompletedPeachValueEl.textContent = String(activePeaches.completed);
+  progressCompletedCherryValueEl.textContent = String(activeCherries.completed);
+  progressTotalPeachValueEl.textContent = String(activePeaches.total);
+  progressTotalCherryValueEl.textContent = String(activeCherries.total);
+  progressActivePeriodStartValueEl.textContent = activePeriodRows.start;
+  progressActivePeriodEndValueEl.textContent = activePeriodRows.end;
+  progressActivePeriodEndValueEl.hidden = isMonthlySummary && !activePeriodRows.end;
+  progressActivePeriodYearValueEl.textContent = activePeriodRows.year;
+
+  weeklyProgressBtnEl?.classList.toggle("is-active", progressViewMode === "weekly");
+  weeklyProgressBtnEl?.setAttribute("aria-pressed", String(progressViewMode === "weekly"));
+  monthlyProgressBtnEl?.classList.toggle("is-active", progressViewMode === "monthly");
+  monthlyProgressBtnEl?.setAttribute("aria-pressed", String(progressViewMode === "monthly"));
+
+  progressBarsEl.innerHTML = "";
+  stats.forEach((period, index) => {
+    const itemEl = document.createElement("article");
+    itemEl.className = "progress-bar-card";
+    itemEl.classList.toggle("is-active", index === activeIndex);
+    if (progressViewMode === "weekly" && period.pages.length === 1) {
+      itemEl.tabIndex = 0;
+      itemEl.setAttribute("role", "button");
+      itemEl.setAttribute("aria-label", `Open ${period.label}`);
+      itemEl.addEventListener("click", () => {
+        renderPage(period.pages[0]);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+      itemEl.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        renderPage(period.pages[0]);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    }
+
+    const topEl = document.createElement("div");
+    topEl.className = "progress-bar-head";
+
+    const labelEl = document.createElement("strong");
+    labelEl.className = "progress-bar-label";
+    labelEl.textContent = period.label;
+    topEl.append(labelEl);
+
+    const metricsEl = document.createElement("div");
+    metricsEl.className = "progress-metric-list";
+
+    const createMetricEl = (type, metric) => {
+      const metricEl = document.createElement("div");
+      metricEl.className = `progress-metric progress-metric-${type}`;
+
+      const metricTypeEl = document.createElement("span");
+      metricTypeEl.className = "progress-metric-type";
+      metricTypeEl.textContent = type === "peaches" ? "🍑" : "🍒";
+
+      const trackEl = document.createElement("div");
+      trackEl.className = "progress-bar-track progress-metric-track";
+
+      const fillEl = document.createElement("div");
+      fillEl.className = `progress-bar-fill progress-bar-fill-${type}`;
+      fillEl.style.width = `${metric.percentage}%`;
+
+      trackEl.append(fillEl);
+
+      const metricBarRowEl = document.createElement("div");
+      metricBarRowEl.className = "progress-metric-bar-row";
+      metricBarRowEl.append(metricTypeEl, trackEl);
+
+      const ratioEl = document.createElement("span");
+      ratioEl.className = "progress-bar-ratio";
+      ratioEl.textContent = `${metric.completed}/${metric.total || 0}`;
+
+      const footerEl = document.createElement("div");
+      footerEl.className = "progress-bar-foot";
+      footerEl.innerHTML = `<span>${metric.percentage}% complete</span><span>${metric.completed}/${metric.total || 0}</span>`;
+
+      metricEl.append(metricBarRowEl, footerEl);
+      return metricEl;
+    };
+
+    metricsEl.append(
+      createMetricEl("peaches", period.peaches),
+      createMetricEl("cherries", period.cherries)
+    );
+
+    itemEl.append(topEl, metricsEl);
+    progressBarsEl.append(itemEl);
+  });
+}
+
+function renderProgressPage(opts = {}) {
+  const { updateUrl = true, replaceUrl = false, mode = progressViewMode } = opts;
+  currentPage = 1;
+  currentView = "progress";
+  progressViewMode = mode === "monthly" ? "monthly" : "weekly";
+
+  if (updateUrl) {
+    setUrlForState(1, null, replaceUrl, "progress", progressViewMode);
+  }
+
+  overviewCarouselEl.hidden = true;
+  overviewCtaEl.hidden = true;
+  overviewProgressLinkEl.hidden = true;
+  weekPanelEl.hidden = true;
+  dayPanelEl.hidden = true;
+  progressPageEl.hidden = false;
+
+  renderProgressDashboard();
 }
 
 function getCurrentWeekPage() {
@@ -2935,8 +3239,10 @@ function renderDayPage(weekPage, dayIndex, opts = {}) {
 
   overviewCarouselEl.hidden = true;
   overviewCtaEl.hidden = true;
+  overviewProgressLinkEl.hidden = true;
   weekPanelEl.hidden = true;
   dayPanelEl.hidden = false;
+  progressPageEl.hidden = true;
 
   resetDayTransitionState();
   renderDayCarousel();
@@ -2953,8 +3259,10 @@ function renderPage(page, opts = {}) {
   const onOverview = currentPage === 1;
   overviewCarouselEl.hidden = !onOverview;
   overviewCtaEl.hidden = !onOverview;
+  overviewProgressLinkEl.hidden = !onOverview;
   weekPanelEl.hidden = onOverview;
   dayPanelEl.hidden = true;
+  progressPageEl.hidden = true;
 
   if (onOverview) {
     resetOverviewTransitionState();
@@ -2998,6 +3306,10 @@ goCurrentWeekBtnEl.addEventListener("click", () => {
   renderPage(page);
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
+openProgressBtnEl?.addEventListener("click", () => {
+  renderProgressPage();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
 addMissionBtnEl.addEventListener("click", () => {
   const state = loadMissionState();
   state.push("New mission statement");
@@ -3039,9 +3351,21 @@ dayHomeBtnEl.addEventListener("click", () => {
   renderPage(1);
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
+progressHomeBtnEl?.addEventListener("click", () => {
+  renderPage(1);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
 dayWeekBtnEl.addEventListener("click", () => {
   renderPage(currentPage);
   window.scrollTo({ top: 0, behavior: "smooth" });
+});
+weeklyProgressBtnEl?.addEventListener("click", () => {
+  if (progressViewMode === "weekly") return;
+  renderProgressPage({ mode: "weekly" });
+});
+monthlyProgressBtnEl?.addEventListener("click", () => {
+  if (progressViewMode === "monthly") return;
+  renderProgressPage({ mode: "monthly" });
 });
 
 if (dayCarouselTrackEl) {
@@ -3072,7 +3396,9 @@ if (dayCarouselTrackEl) {
 
 window.addEventListener("popstate", () => {
   const state = pageStateFromUrl();
-  if (state.dayIndex !== null) {
+  if (state.view === "progress") {
+    renderProgressPage({ updateUrl: false, mode: state.mode });
+  } else if (state.dayIndex !== null) {
     renderDayPage(state.page, state.dayIndex, { updateUrl: false });
   } else {
     renderPage(state.page, { updateUrl: false });
@@ -3098,7 +3424,9 @@ async function bootApp() {
   seedDefaultDayHours();
   initDayCarousel();
   const initialState = pageStateFromUrl();
-  if (initialState.dayIndex !== null) {
+  if (initialState.view === "progress") {
+    renderProgressPage({ replaceUrl: true, mode: initialState.mode });
+  } else if (initialState.dayIndex !== null) {
     renderDayPage(initialState.page, initialState.dayIndex, { replaceUrl: true });
   } else {
     renderPage(initialState.page, { replaceUrl: true });
@@ -3107,6 +3435,7 @@ async function bootApp() {
   renderOps();
   renderReminder();
   initOverviewCarousel();
+  renderProgressDashboard();
 }
 
 bootApp();
